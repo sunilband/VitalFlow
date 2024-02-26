@@ -26,7 +26,8 @@ import {
   SelectGroup,
   SelectLabel,
 } from "@/components/ui/select";
-import { getAllStates, getCities } from "@/lib/apiCalls/getAllStates";
+import { getAllStates, getCities } from "@/lib/apiCalls/signup/getAllStates";
+import { motion } from "framer-motion";
 
 type Props = {};
 
@@ -110,9 +111,12 @@ const DonorSignup = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center h-calculated">
-      <div
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1, type: "spring", damping: 10 }}
         className={cn(
-          "grid gap-6 p-4 border rounded-md shadow-xl bg-white dark:bg-[#09090B]",
+          "grid gap-6 p-4 rounded-md shadow-xl bg-white dark:bg-[#09090B]",
         )}
         {...props}
       >
@@ -393,7 +397,7 @@ const DonorSignup = (props: Props) => {
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-transparent px-2 text-muted-foreground">
+            <span className="bg-background px-2 text-muted-foreground">
               Already have an account ?
             </span>
           </div>
@@ -401,7 +405,7 @@ const DonorSignup = (props: Props) => {
         <Button variant="secondary" type="button" disabled={isLoading}>
           <Link href="/donor/login">Login</Link>
         </Button>
-      </div>
+      </motion.div>
     </div>
   );
 };

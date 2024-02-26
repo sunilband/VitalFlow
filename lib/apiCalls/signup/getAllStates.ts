@@ -1,4 +1,4 @@
-const apiKey = "Yko5aE42bkhKVzBXUWozWFpDSVZONDg5NkVzd0FQaXNMS3VxaTFybA==";
+const apiKey = process.env.NEXT_PUBLIC_STATES_API_KEY || "";
 
 export const getAllStates = async () => {
   var headers = new Headers();
