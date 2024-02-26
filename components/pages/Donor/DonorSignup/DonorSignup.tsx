@@ -26,12 +26,19 @@ import {
   SelectGroup,
   SelectLabel,
 } from "@/components/ui/select";
-import { getAllStates, getCities } from "@/lib/apiCalls/signup/getAllStates";
+import {
+  getAllStates,
+  getCities,
+} from "@/lib/apiCalls/signup/getAllStatesAndCities";
+import { sendPhoneOtp, sendEmailOtp } from "@/lib/apiCalls/signup/otpCalls";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import jwt from "jsonwebtoken";
 
 type Props = {};
 
 const DonorSignup = (props: Props) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
 
   const initialValues = {
@@ -39,7 +46,7 @@ const DonorSignup = (props: Props) => {
     dob: "",
     weight: "",
     gender: "",
-    bloodgroup: "",
+    bloodGroup: "",
     phone: "",
     email: "",
     address: {
@@ -61,7 +68,7 @@ const DonorSignup = (props: Props) => {
       gender: Yup.string()
         .oneOf(["Male", "Female", "Other"], "Invalid gender")
         .required("Gender is required"),
-      bloodgroup: Yup.string()
+      bloodGroup: Yup.string()
         .oneOf(
           ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
           "Invalid blood group",
@@ -83,8 +90,50 @@ const DonorSignup = (props: Props) => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    const errors = Object.keys(formik.errors);
+    const errorValues = Object.values(formik.errors);
+    console.log("formik.errors", formik.errors);
+    console.log("values", formik.values);
+    if (formik.errors) {
+      for (let i = 0; i < errors.length; i++) {
+        if (errors[i] !== "address") {
+          toast.error(String(errorValues[i])); // Convert errorValues[i] to a string
+          return;
+        }
+        if (errors[i] === "address") {
+          return toast.error("address is not filled"); // Convert errorValues[i] to a string
+        }
+      }
+    }
     setIsLoading(true);
+
+    const secretInputs = await jwt.sign(formik.values, "secret");
+
+    try {
+      if (formik.errors)
+        if (formik.values.phone) {
+          const response = await sendPhoneOtp({ phone: formik.values.phone });
+          if (response.success) {
+            toast.success(response.message);
+            router.push(`/donor/signup/verify?values=${secretInputs}`);
+          } else {
+            toast.error(response.message);
+          }
+        }
+
+      if (formik.values.email) {
+        const response = await sendEmailOtp({ email: formik.values.email });
+        if (response.success) {
+          toast.success(response.message);
+          router.push(`/donor/signup/verify?values=${secretInputs}`);
+        } else {
+          toast.error(response.message);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
     console.log(formik.values);
   };
 
@@ -211,8 +260,8 @@ const DonorSignup = (props: Props) => {
 
               <div>
                 <Select
-                  value={formik.values.bloodgroup}
-                  onValueChange={(e) => formik.setFieldValue("bloodgroup", e)}
+                  value={formik.values.bloodGroup}
+                  onValueChange={(e) => formik.setFieldValue("bloodGroup", e)}
                 >
                   <SelectTrigger className="w-full text-[#71717A]">
                     <SelectValue placeholder="Blood Group" />

@@ -37,7 +37,7 @@ const DonorLogin = (props: Props) => {
     dob: "",
     weight: "",
     gender: "",
-    bloodgroup: "",
+    bloodGroup: "",
     phone: "",
     email: "",
     address: {
@@ -60,7 +60,7 @@ const DonorLogin = (props: Props) => {
       gender: Yup.string()
         .oneOf(["Male", "Female", "Other"], "Invalid gender")
         .required("Gender is required"),
-      bloodgroup: Yup.string()
+      bloodGroup: Yup.string()
         .oneOf(
           ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
           "Invalid blood group",
@@ -181,8 +181,8 @@ const DonorLogin = (props: Props) => {
 
               <div>
                 <Select
-                  value={formik.values.bloodgroup}
-                  onValueChange={(e) => formik.setFieldValue("bloodgroup", e)}
+                  value={formik.values.bloodGroup}
+                  onValueChange={(e) => formik.setFieldValue("bloodGroup", e)}
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Blood Group" />
