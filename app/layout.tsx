@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar/Navbar";
 import { ThemeProvider } from "@/components/Providers/theme-provider";
 import PageAnimatePresence from "@/components/Providers/PageAnimations";
+import { Toaster, toast } from "sonner";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -40,6 +41,7 @@ export default function RootLayout({
           <PageAnimatePresence>
             <Navbar />
             {children}
+            <Toaster />
           </PageAnimatePresence>
         </ThemeProvider>
       </body>

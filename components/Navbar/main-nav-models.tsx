@@ -33,12 +33,8 @@ export const DonateBlood = () => {
         <p className={linkclass}>Blood Donation Camps</p>
       </Link>
 
-      <Link href="/docs/components">
+      <Link href="/donor/login">
         <p className={linkclass}>Donor Login</p>
-      </Link>
-
-      <Link href="/docs/components">
-        <p className={linkclass}>Camp Admin Login</p>
       </Link>
 
       <Link href="/docs/components">

@@ -19,6 +19,9 @@ const config = {
       },
     },
     extend: {
+      height: {
+        calculated: "calc(100vh - 3.6rem)",
+      },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
