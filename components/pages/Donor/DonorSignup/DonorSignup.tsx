@@ -111,15 +111,18 @@ const DonorSignup = (props: Props) => {
   return (
     <div className="flex justify-center items-center h-calculated">
       <div
-        className={cn("grid gap-6 p-4 border rounded-md shadow-xl")}
+        className={cn(
+          "grid gap-6 p-4 border rounded-md shadow-xl bg-white dark:bg-[#09090B]",
+        )}
         {...props}
       >
         <form onSubmit={onSubmit}>
           <div className="grid gap-2">
             <div className="w-80 flex flex-col gap-2">
-              <h2 className="text-center font-semibold tracking-widest">
+              <h2 className="text-center text-lg font-semibold tracking-widest">
                 SIGNUP
               </h2>
+
               <div>
                 <Input
                   id="fullName"
@@ -371,9 +374,7 @@ const DonorSignup = (props: Props) => {
                 </Popover>
               </div>
             </div>
-            <Button
-            // disabled={isLoading}
-            >
+            <Button disabled={isLoading}>
               {isLoading && (
                 <Image
                   src={spinner}
@@ -392,7 +393,7 @@ const DonorSignup = (props: Props) => {
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
+            <span className="bg-transparent px-2 text-muted-foreground">
               Already have an account ?
             </span>
           </div>

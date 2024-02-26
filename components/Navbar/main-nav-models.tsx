@@ -8,7 +8,7 @@ export const BloodAvailability = () => {
     <motion.div
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      className="border absolute p-2 py-4 font-medium rounded-md flex flex-col gap-3 w-44 top-11 -left-2"
+      className="border absolute p-2 py-4 font-medium rounded-md flex flex-col gap-3 w-44 top-11 -left-2 glass"
     >
       <Link href="/docs/components">
         <p className={linkclass}>Blood Availablity</p>
@@ -27,7 +27,7 @@ export const DonateBlood = () => {
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: -100, opacity: 0 }}
-      className="border absolute p-2 py-4 font-medium rounded-md flex flex-col gap-3 w-44 top-11 -left-2"
+      className="border absolute p-2 py-4 font-medium rounded-md flex flex-col gap-3 w-44 top-11 -left-2 glass"
     >
       <Link href="/docs/components">
         <p className={linkclass}>Blood Donation Camps</p>
