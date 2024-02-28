@@ -1,6 +1,6 @@
 import { GridBackgroundDemo } from "@/components/Backgrounds/Grid";
 import VerifyUser from "@/components/pages/Donor/DonorSignup/VerifyUser.tsx/VerifyUser";
-import React from "react";
+import React, { Suspense } from "react";
 
 type Props = {};
 
@@ -10,7 +10,9 @@ const page = (props: Props) => {
       <div className="relative">
         <GridBackgroundDemo />
       </div>
-      <VerifyUser />
+      <Suspense fallback="VerifyUserFallback">
+        <VerifyUser />
+      </Suspense>
     </div>
   );
 };
