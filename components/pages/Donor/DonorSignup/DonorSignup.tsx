@@ -74,7 +74,12 @@ const DonorSignup = (props: Props) => {
           "Invalid blood group",
         )
         .required("Blood group is required"),
-      phone: Yup.string().matches(/^[0-9]{10}$/, "Phone number is not valid"),
+      phone: Yup.string()
+        .matches(
+          /^[0-9]{10}$/,
+          "Phone number is not valid.Dont add  +91 or 0 before the number",
+        )
+        .required("Phone number is required"),
       email: Yup.string().email("Invalid email address"),
       address: Yup.object({
         addressType: Yup.string().required("Address type is required"),
@@ -107,10 +112,11 @@ const DonorSignup = (props: Props) => {
     }
     setIsLoading(true);
 
-    const secretInputs = await jwt.sign(formik.values, "secret");
-
     try {
-      if (formik.errors)
+      const secretInputs = await jwt.sign(formik.values, "secret");
+      const formikErrorExists = Object.keys(formik.errors).length > 0;
+
+      if (!formikErrorExists) {
         if (formik.values.phone) {
           const response = await sendPhoneOtp({ phone: formik.values.phone });
           if (response.success) {
@@ -121,13 +127,14 @@ const DonorSignup = (props: Props) => {
           }
         }
 
-      if (formik.values.email) {
-        const response = await sendEmailOtp({ email: formik.values.email });
-        if (response.success) {
-          toast.success(response.message);
-          router.push(`/donor/signup/verify?values=${secretInputs}`);
-        } else {
-          toast.error(response.message);
+        if (formik.values.email) {
+          const response = await sendEmailOtp({ email: formik.values.email });
+          if (response.success) {
+            toast.success(response.message);
+            router.push(`/donor/signup/verify?values=${secretInputs}`);
+          } else {
+            toast.error(response.message);
+          }
         }
       }
     } catch (error) {
@@ -150,7 +157,7 @@ const DonorSignup = (props: Props) => {
     const selectedState = allStates?.find(
       (state) => state.name === formik.values.address.state,
     );
-    console.log("selectedState", selectedState);
+
     if (selectedState) {
       getCities(selectedState?.iso2 || "MH").then((data) => {
         setAllCities(data);
