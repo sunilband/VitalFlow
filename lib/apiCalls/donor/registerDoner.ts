@@ -11,6 +11,7 @@ export const registerDoner = async ({
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify({
       ...data,
     }),

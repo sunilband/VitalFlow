@@ -29,8 +29,8 @@ import {
 import {
   getAllStates,
   getCities,
-} from "@/lib/apiCalls/signup/getAllStatesAndCities";
-import { sendPhoneOtp, sendEmailOtp } from "@/lib/apiCalls/signup/otpCalls";
+} from "@/lib/apiCalls/donor/getAllStatesAndCities";
+import { sendPhoneOtp, sendEmailOtp } from "@/lib/apiCalls/donor/otpCalls";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import jwt from "jsonwebtoken";
@@ -110,31 +110,31 @@ const DonorSignup = (props: Props) => {
         }
       }
     }
+    if (errors.length > 0) {
+      return;
+    }
     setIsLoading(true);
 
     try {
       const secretInputs = await jwt.sign(formik.values, "secret");
-      const formikErrorExists = Object.keys(formik.errors).length > 0;
 
-      if (!formikErrorExists) {
-        if (formik.values.phone) {
-          const response = await sendPhoneOtp({ phone: formik.values.phone });
-          if (response.success) {
-            toast.success(response.message);
-            router.push(`/donor/signup/verify?values=${secretInputs}`);
-          } else {
-            toast.error(response.message);
-          }
+      if (formik.values.phone) {
+        const response = await sendPhoneOtp({ phone: formik.values.phone });
+        if (response.success) {
+          toast.success(response.message);
+          router.push(`/donor/signup/verify?values=${secretInputs}`);
+        } else {
+          toast.error(response.message);
         }
+      }
 
-        if (formik.values.email) {
-          const response = await sendEmailOtp({ email: formik.values.email });
-          if (response.success) {
-            toast.success(response.message);
-            router.push(`/donor/signup/verify?values=${secretInputs}`);
-          } else {
-            toast.error(response.message);
-          }
+      if (formik.values.email) {
+        const response = await sendEmailOtp({ email: formik.values.email });
+        if (response.success) {
+          toast.success(response.message);
+          router.push(`/donor/signup/verify?values=${secretInputs}`);
+        } else {
+          toast.error(response.message);
         }
       }
     } catch (error) {
@@ -166,20 +166,20 @@ const DonorSignup = (props: Props) => {
   }, [formik.values.address.state]);
 
   return (
-    <div className="flex justify-center items-center h-calculated">
+    <div className="flex justify-center items-center  h-calculated">
       <motion.div
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, type: "spring", damping: 10 }}
         className={cn(
-          "grid gap-6 p-4 rounded-md shadow-xl bg-white dark:bg-[#09090B]",
+          "grid gap-6 p-4 rounded-md shadow-xl bg-white dark:bg-[#09090B] border-[0.7px]",
         )}
         {...props}
       >
         <form onSubmit={onSubmit}>
           <div className="grid gap-2">
             <div className="w-80 flex flex-col gap-2">
-              <h2 className="text-center text-lg font-semibold tracking-widest">
+              <h2 className="text-center text-lg font-light tracking-widest">
                 SIGNUP
               </h2>
 
@@ -197,97 +197,101 @@ const DonorSignup = (props: Props) => {
                 ) : null}
               </div>
 
-              <div>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !formik.values.dob && "text-muted-foreground",
-                      )}
-                    >
-                      {/* <CalendarIcon className="mr-2 h-4 w-4" /> */}
-                      {formik.values.dob ? (
-                        format(formik.values.dob, "PPP")
-                      ) : (
-                        <span>Date Of Birth</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      toYear={parseInt(format(new Date(), "yyyy")) - 18}
-                      selected={new Date(formik.values.dob)}
-                      onSelect={(date) => formik.setFieldValue("dob", date)} // update the date when it is changed
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                {formik.touched.dob && formik.errors.dob ? (
-                  <div className="text-red-500 text-xs">
-                    {formik.errors.dob}
-                  </div>
-                ) : null}
-              </div>
+              <section className="flex justify-between gap-1">
+                <div className="w-full">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !formik.values.dob && "text-muted-foreground",
+                        )}
+                      >
+                        {/* <CalendarIcon className="mr-2 h-4 w-4" /> */}
+                        {formik.values.dob ? (
+                          format(formik.values.dob, "PPP")
+                        ) : (
+                          <span>Date Of Birth</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        toYear={parseInt(format(new Date(), "yyyy")) - 18}
+                        selected={new Date(formik.values.dob)}
+                        onSelect={(date) => formik.setFieldValue("dob", date)} // update the date when it is changed
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  {formik.touched.dob && formik.errors.dob ? (
+                    <div className="text-red-500 text-xs">
+                      {formik.errors.dob}
+                    </div>
+                  ) : null}
+                </div>
 
-              <div>
-                <Input
-                  id="weight"
-                  type="text"
-                  placeholder="Weight"
-                  {...formik.getFieldProps("weight")}
-                />
-                {formik.touched.weight && formik.errors.weight ? (
-                  <div className="text-red-500 text-xs">
-                    {formik.errors.weight}
-                  </div>
-                ) : null}
-              </div>
+                <div className="w-full">
+                  <Input
+                    id="weight"
+                    type="text"
+                    placeholder="Weight"
+                    {...formik.getFieldProps("weight")}
+                  />
+                  {formik.touched.weight && formik.errors.weight ? (
+                    <div className="text-red-500 text-xs">
+                      {formik.errors.weight}
+                    </div>
+                  ) : null}
+                </div>
+              </section>
 
-              <div>
-                <Select
-                  value={formik.values.gender}
-                  onValueChange={(e) => formik.setFieldValue("gender", e)}
-                >
-                  <SelectTrigger className="w-full text-[#71717A]">
-                    <SelectValue placeholder="Gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Gender</SelectLabel>
-                      <SelectItem value="Male">Male</SelectItem>
-                      <SelectItem value="Female">Female</SelectItem>
-                      <SelectItem value="Other">Other</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
+              <section className="flex justify-between gap-1">
+                <div className="w-full">
+                  <Select
+                    value={formik.values.gender}
+                    onValueChange={(e) => formik.setFieldValue("gender", e)}
+                  >
+                    <SelectTrigger className="w-full text-[#71717A]">
+                      <SelectValue placeholder="Gender" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Gender</SelectLabel>
+                        <SelectItem value="Male">Male</SelectItem>
+                        <SelectItem value="Female">Female</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <div>
-                <Select
-                  value={formik.values.bloodGroup}
-                  onValueChange={(e) => formik.setFieldValue("bloodGroup", e)}
-                >
-                  <SelectTrigger className="w-full text-[#71717A]">
-                    <SelectValue placeholder="Blood Group" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Blood Group</SelectLabel>
-                      <SelectItem value="A+">A+</SelectItem>
-                      <SelectItem value="A-">A-</SelectItem>
-                      <SelectItem value="B+">B+</SelectItem>
-                      <SelectItem value="B-">B-</SelectItem>
-                      <SelectItem value="AB+">AB+</SelectItem>
-                      <SelectItem value="AB-">AB-</SelectItem>
-                      <SelectItem value="O+">O+</SelectItem>
-                      <SelectItem value="O-">O-</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
+                <div className="w-full">
+                  <Select
+                    value={formik.values.bloodGroup}
+                    onValueChange={(e) => formik.setFieldValue("bloodGroup", e)}
+                  >
+                    <SelectTrigger className="w-full text-[#71717A]">
+                      <SelectValue placeholder="Blood Group" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Blood Group</SelectLabel>
+                        <SelectItem value="A+">A+</SelectItem>
+                        <SelectItem value="A-">A-</SelectItem>
+                        <SelectItem value="B+">B+</SelectItem>
+                        <SelectItem value="B-">B-</SelectItem>
+                        <SelectItem value="AB+">AB+</SelectItem>
+                        <SelectItem value="AB-">AB-</SelectItem>
+                        <SelectItem value="O+">O+</SelectItem>
+                        <SelectItem value="O-">O-</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </section>
 
               <div>
                 <Input
@@ -318,120 +322,99 @@ const DonorSignup = (props: Props) => {
                 ) : null}
               </div>
 
-              <div>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className="w-full text-start flex"
+              <div className="grid gap-2">
+                <section className="flex gap-1">
+                  <div className="flex flex-col w-full">
+                    <Select
+                      value={formik.values.address.state}
+                      onValueChange={(e) =>
+                        formik.setFieldValue("address.state", e)
+                      }
                     >
-                      <p className="w-full -ml-2 text-[#71717A] font-normal">
-                        Address
-                      </p>
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-full">
-                    <div className="grid gap-4">
-                      <div className="space-y-2">
-                        <h4 className="font-medium leading-none">Address</h4>
-                        <p className="text-sm text-muted-foreground">
-                          Please Fill The address below
-                        </p>
-                      </div>
-                      <div className="grid gap-2">
-                        <div className="flex flex-col">
-                          <Select
-                            value={formik.values.address.state}
-                            onValueChange={(e) =>
-                              formik.setFieldValue("address.state", e)
-                            }
-                          >
-                            <SelectTrigger className="w-full text-[#71717A]">
-                              <SelectValue placeholder="State" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectLabel>State</SelectLabel>
-                                {allStates?.map((state) => (
-                                  <SelectItem key={state.id} value={state.name}>
-                                    {state.name}
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div className="flex flex-col">
-                          <Select
-                            value={formik.values.address.city}
-                            onValueChange={(e) =>
-                              formik.setFieldValue("address.city", e)
-                            }
-                            disabled={!formik.values.address.state}
-                          >
-                            <SelectTrigger className="w-full text-[#71717A]">
-                              <SelectValue placeholder="City" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectLabel>Cities</SelectLabel>
-                                {allCities?.map((city) => (
-                                  <SelectItem key={city.id} value={city.name}>
-                                    {city.name}
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div className="flex flex-col">
-                          <Input
-                            id="pincode"
-                            type="text"
-                            placeholder="Pincode"
-                            {...formik.getFieldProps("address.pincode")}
-                          />
-                          {formik.touched.address?.pincode &&
-                          formik.errors.address?.pincode ? (
-                            <div className="text-red-500 text-xs">
-                              {formik.errors.address?.pincode}
-                            </div>
-                          ) : null}
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <div>
-                            <Input
-                              id="addressLine1"
-                              type="text"
-                              placeholder="Address Line 1"
-                              {...formik.getFieldProps("address.addressLine1")}
-                            />
-                            {formik.touched.address?.addressLine1 &&
-                            formik.errors.address?.addressLine1 ? (
-                              <div className="text-red-500 text-xs">
-                                {formik.errors.address?.addressLine1}
-                              </div>
-                            ) : null}
-                          </div>
-                          <div>
-                            <Input
-                              id="addressLine2"
-                              type="text"
-                              placeholder="Address Line 2"
-                              {...formik.getFieldProps("address.addressLine2")}
-                            />
-                            {formik.touched.address?.addressLine2 &&
-                            formik.errors.address?.addressLine2 ? (
-                              <div className="text-red-500 text-xs">
-                                {formik.errors.address?.addressLine2}
-                              </div>
-                            ) : null}
-                          </div>
-                        </div>
-                      </div>
+                      <SelectTrigger className="w-full text-[#71717A]">
+                        <SelectValue placeholder="State" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>State</SelectLabel>
+                          {allStates?.map((state, key) => (
+                            <SelectItem key={key} value={state.name}>
+                              {state.name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <Select
+                      value={formik.values.address.city}
+                      onValueChange={(e) =>
+                        formik.setFieldValue("address.city", e)
+                      }
+                      disabled={!formik.values.address.state}
+                    >
+                      <SelectTrigger className="w-full text-[#71717A]">
+                        <SelectValue placeholder="City" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Cities</SelectLabel>
+                          {allCities?.map((city, key) => (
+                            <SelectItem key={key} value={city.name}>
+                              {city.name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </section>
+
+                <div className="flex flex-col">
+                  <Input
+                    id="pincode"
+                    type="text"
+                    placeholder="Pincode"
+                    {...formik.getFieldProps("address.pincode")}
+                  />
+                  {formik.touched.address?.pincode &&
+                  formik.errors.address?.pincode ? (
+                    <div className="text-red-500 text-xs">
+                      {formik.errors.address?.pincode}
                     </div>
-                  </PopoverContent>
-                </Popover>
+                  ) : null}
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div>
+                    <Input
+                      id="addressLine1"
+                      type="text"
+                      placeholder="Address Line 1"
+                      {...formik.getFieldProps("address.addressLine1")}
+                    />
+                    {formik.touched.address?.addressLine1 &&
+                    formik.errors.address?.addressLine1 ? (
+                      <div className="text-red-500 text-xs">
+                        {formik.errors.address?.addressLine1}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div>
+                    <Input
+                      id="addressLine2"
+                      type="text"
+                      placeholder="Address Line 2"
+                      {...formik.getFieldProps("address.addressLine2")}
+                    />
+                    {formik.touched.address?.addressLine2 &&
+                    formik.errors.address?.addressLine2 ? (
+                      <div className="text-red-500 text-xs">
+                        {formik.errors.address?.addressLine2}
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
               </div>
             </div>
             <Button disabled={isLoading}>

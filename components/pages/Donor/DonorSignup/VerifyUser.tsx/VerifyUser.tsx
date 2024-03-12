@@ -1,30 +1,49 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Otp from "./Otp";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { verifyOtp } from "@/lib/apiCalls/signup/otpCalls";
+import { verifyOtp } from "@/lib/apiCalls/donor/otpCalls";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
-import { registerDoner } from "@/lib/apiCalls/signup/registerDoner";
+import { registerDoner } from "@/lib/apiCalls/donor/registerDoner";
 import jwt from "jsonwebtoken";
+import { useRouter } from "next/navigation";
+import { useDonor } from "@/contexts/donorContext";
 
 type Props = {};
 
 const VerifyUser = (props: Props) => {
+  const router = useRouter();
+  const { donor, setDonor } = useDonor();
   const searchParams = useSearchParams();
   let params: any = searchParams.get("values") || "";
+
   try {
     params = jwt.verify(params, "secret");
     console.log("decryptedParams", params);
   } catch (error) {
     console.log("error", error);
   }
+
+  useEffect(() => {
+    if (!params) {
+      return router.push("/donor/signup");
+    }
+  }, [params]);
+
   const [otp, setOtp] = React.useState("");
   const [selectedVerificationMethod, setSelectedverificationMethod] =
     useState("phone");
 
+  useEffect(() => {
+    if (donor) {
+      router.push("/donor");
+    }
+  }, []);
+
   const handleVerify = async () => {
+    console.log("params");
     try {
       const verifiedOTP = await verifyOtp({
         otp,
@@ -33,7 +52,9 @@ const VerifyUser = (props: Props) => {
       });
 
       if (!verifiedOTP.success) {
-        toast.error(verifiedOTP.message);
+        toast.error(
+          verifiedOTP.message + " " + "& Please check OTP from Phone / Email",
+        );
         return;
       }
 
@@ -42,10 +63,15 @@ const VerifyUser = (props: Props) => {
         const registerUser = await registerDoner({ ...params });
         if (registerUser.success) {
           toast.success("User Registered Successfully");
+          console.log("registerUser", registerUser);
+          setDonor({ ...registerUser.data });
+          console.log("donor is", donor);
+          router.push("/donor");
         }
       }
     } catch (error) {}
   };
+
   return (
     <div className="h-calculated w-screen flex flex-col gap-3 justify-center items-center">
       <div className="flex flex-col gap-4 glass p-4 rounded-md border">

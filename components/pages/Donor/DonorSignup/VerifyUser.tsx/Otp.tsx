@@ -1,9 +1,6 @@
 "use client";
 import React from "react";
 import { OTPInput, SlotProps } from "input-otp";
-import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-import type { ClassValue } from "clsx";
 import { cn } from "@/lib/utils";
 
 function Slot(props: SlotProps) {

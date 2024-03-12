@@ -1,238 +1,173 @@
 "use client";
-import * as React from "react";
-import { cn } from "@/lib/utils";
-import { Button } from "../../../ui/button";
-import { Input } from "../../../ui/input";
-import { Label } from "../../../ui/label";
-import spinner from "../../../../public/svgs/spinner.svg";
-import Link from "next/link";
-import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import Otp from "../DonorSignup/VerifyUser.tsx/Otp";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { toast } from "sonner";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { format } from "date-fns";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  SelectGroup,
-  SelectLabel,
-} from "@/components/ui/select";
+import { sendDonorLoginOTP } from "@/lib/apiCalls/donor/sendDonorLoginOTP";
+import { donorLogin } from "@/lib/apiCalls/donor/verifyDonorLoginOTP";
+import spinner from "../../../../public/svgs/spinner.svg";
+import Image from "next/image";
 
 type Props = {};
 
-const DonorLogin = (props: Props) => {
-  const [isLoading, setIsLoading] = React.useState(false);
+const DonerLogin = (props: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const [selectedVerificationMethod, setSelectedverificationMethod] =
+    useState("phone");
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [otp, setOtp] = useState("");
 
   const initialValues = {
-    fullName: "",
-    dob: "",
-    weight: "",
-    gender: "",
-    bloodGroup: "",
     phone: "",
     email: "",
-    address: {
-      addressType: "Donor",
-      state: "",
-      district: "",
-      city: "",
-      pincode: "",
-      addressLine1: "",
-      addressLine2: "",
-    },
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema: Yup.object({
-      fullName: Yup.string().required("Full name is required"),
-      dob: Yup.string().required("Date of birth is required"),
-      weight: Yup.string().required("Weight is required"),
-      gender: Yup.string()
-        .oneOf(["Male", "Female", "Other"], "Invalid gender")
-        .required("Gender is required"),
-      bloodGroup: Yup.string()
-        .oneOf(
-          ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-          "Invalid blood group",
-        )
-        .required("Blood group is required"),
-      phone: Yup.string().matches(/^[0-9]{10}$/, "Phone number is not valid"),
-      email: Yup.string().email("Invalid email address"),
-      address: Yup.object({
-        addressType: Yup.string().required("Address type is required"),
-        state: Yup.string().required("State is required"),
-        district: Yup.string().required("District is required"),
-        city: Yup.string().required("City is required"),
-        pincode: Yup.string().required("Pincode is required"),
-        addressLine1: Yup.string().required("Address line 1 is required"),
-        addressLine2: Yup.string().required("Address line 2 is required"),
-      }),
+      phone: Yup.string()
+        .required("Phone is required")
+        .matches(/^\d{10}$/, "Phone number must be exactly 10 digits long"),
+      email: Yup.string().email("Invalid email").required("Email is required"),
     }),
     onSubmit: (values) => {},
   });
-  console.log(formik.values);
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSendOTP = async () => {
     setIsLoading(true);
-    console.log(formik.values);
+    if (selectedVerificationMethod == "phone") {
+      if (formik.errors.phone) {
+        toast.error(formik.errors.phone);
+        setIsLoading(false);
+        return;
+      }
+    }
+
+    if (selectedVerificationMethod == "email") {
+      if (formik.errors.email) {
+        toast.error(formik.errors.email);
+        setIsLoading(false);
+        return;
+      }
+    }
+
+    try {
+      if (selectedVerificationMethod == "phone") {
+        const data = await sendDonorLoginOTP({ phone: formik.values.phone });
+        if (!data.success) {
+          toast.error(data.message);
+          setIsLoading(false);
+          return;
+        }
+        toast.success("OTP sent to your phone");
+        setIsLoading(false);
+        setIsOtpSent(true);
+      }
+
+      if (selectedVerificationMethod == "email") {
+        const data = await sendDonorLoginOTP({ email: formik.values.email });
+        if (!data.success) {
+          toast.error(data.message);
+          setIsLoading(false);
+          return;
+        }
+        toast.success("OTP sent to your email");
+        setIsLoading(false);
+        setIsOtpSent(true);
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerifyOTP = async () => {
+    setIsLoading(true);
+    if (otp.length !== 6) {
+      toast.error("Invalid OTP");
+      return;
+    }
+    try {
+      const data =
+        selectedVerificationMethod == "phone"
+          ? await donorLogin({ phone: formik.values.phone, otp })
+          : await donorLogin({ email: formik.values.email, otp });
+      if (!data.success) {
+        toast.error(data.message);
+        setIsLoading(false);
+        return;
+      }
+      toast.success("Login successful");
+      router.push("/donor");
+      setIsLoading(false);
+    } catch (error) {
+      toast.error("Something went wrong while verifying OTP");
+      console.log(error);
+    }
   };
 
   return (
-    <div className="flex justify-center items-center h-calculated">
-      <div className={cn("grid gap-6 p-4 border rounded-md")} {...props}>
-        <form onSubmit={onSubmit}>
-          <div className="grid gap-2">
-            <div className="w-80 flex flex-col gap-2">
-              <h2 className="text-center font-semibold tracking-wide">
-                SIGNUP
-              </h2>
-              <div>
-                <Input
-                  id="fullName"
-                  type="text"
-                  placeholder="Full Name"
-                  {...formik.getFieldProps("fullName")}
-                />
-                {formik.touched.fullName && formik.errors.fullName ? (
-                  <div className="text-red-500 text-xs">
-                    {formik.errors.fullName}
-                  </div>
-                ) : null}
-              </div>
+    <div className="h-calculated w-screen flex justify-center items-center">
+      <>
+        {!isOtpSent && (
+          <div className="flex items-center flex-col gap-4 glass p-4 rounded-md border w-96">
+            <div className=" flex flex-col gap-2 justify-center items-center w-full">
+              <p className="text-center text-lg font-light tracking-widest">
+                LOGIN
+              </p>
+              <Tabs
+                defaultValue="phone"
+                onValueChange={(e) => {
+                  setSelectedverificationMethod(e);
+                }}
+              >
+                <div>
+                  <TabsList className="w-64">
+                    <TabsTrigger value="phone" className="w-56">
+                      Phone
+                    </TabsTrigger>
+                    <TabsTrigger value="email" className="w-56">
+                      Email
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+              </Tabs>
+            </div>
+            <Input
+              type={selectedVerificationMethod == "phone" ? "text" : "email"}
+              placeholder={
+                selectedVerificationMethod == "phone" ? "Phone" : "Email"
+              }
+              className="w-full"
+              id={selectedVerificationMethod == "phone" ? "phone" : "email"}
+              // name={selectedVerificationMethod == "phone" ? "phone" : "email"}
+              {...formik.getFieldProps(
+                selectedVerificationMethod == "phone" ? "phone" : "email",
+              )}
+            />
 
-              <div>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !formik.values.dob && "text-muted-foreground",
-                      )}
-                    >
-                      {/* <CalendarIcon className="mr-2 h-4 w-4" /> */}
-                      {formik.values.dob ? (
-                        format(formik.values.dob, "PPP")
-                      ) : (
-                        <span>Date Of Birth</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      toYear={parseInt(format(new Date(), "yyyy")) - 18}
-                      selected={new Date(formik.values.dob)}
-                      onSelect={(date) => formik.setFieldValue("dob", date)} // update the date when it is changed
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                {formik.touched.dob && formik.errors.dob ? (
-                  <div className="text-red-500 text-xs">
-                    {formik.errors.dob}
-                  </div>
-                ) : null}
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
               </div>
-
-              <div>
-                <Input
-                  id="weight"
-                  type="text"
-                  placeholder="Weight"
-                  {...formik.getFieldProps("weight")}
-                />
-                {formik.touched.weight && formik.errors.weight ? (
-                  <div className="text-red-500 text-xs">
-                    {formik.errors.weight}
-                  </div>
-                ) : null}
-              </div>
-
-              <div>
-                <Select
-                  value={formik.values.gender}
-                  onValueChange={(e) => formik.setFieldValue("gender", e)}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Gender</SelectLabel>
-                      <SelectItem value="Male">Male</SelectItem>
-                      <SelectItem value="Female">Female</SelectItem>
-                      <SelectItem value="Other">Other</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Select
-                  value={formik.values.bloodGroup}
-                  onValueChange={(e) => formik.setFieldValue("bloodGroup", e)}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Blood Group" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Blood Group</SelectLabel>
-                      <SelectItem value="A+">A+</SelectItem>
-                      <SelectItem value="A-">A-</SelectItem>
-                      <SelectItem value="B+">B+</SelectItem>
-                      <SelectItem value="B-">B-</SelectItem>
-                      <SelectItem value="AB+">AB+</SelectItem>
-                      <SelectItem value="AB-">AB-</SelectItem>
-                      <SelectItem value="O+">O+</SelectItem>
-                      <SelectItem value="O-">O-</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Input
-                  required
-                  id="phone"
-                  type="text"
-                  placeholder="Phone"
-                  {...formik.getFieldProps("phone")}
-                />
-                {formik.touched.phone && formik.errors.phone ? (
-                  <div className="text-red-500 text-xs">
-                    {formik.errors.phone}
-                  </div>
-                ) : null}
-              </div>
-
-              <div>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Email"
-                  {...formik.getFieldProps("email")}
-                />
-                {formik.touched.email && formik.errors.email ? (
-                  <div className="text-red-500 text-xs">
-                    {formik.errors.email}
-                  </div>
-                ) : null}
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Already have an account ?
+                </span>
               </div>
             </div>
-            <Button disabled={isLoading}>
+            <Button
+              onClick={handleSendOTP}
+              className="w-full"
+              disabled={isLoading}
+            >
               {isLoading && (
                 <Image
                   src={spinner}
@@ -242,26 +177,41 @@ const DonorLogin = (props: Props) => {
                   className="mr-2 h-4 w-4 animate-spin"
                 />
               )}
-              Sign Up
+              Send OTP
             </Button>
           </div>
-        </form>
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
+        )}
+        {/* ---------------------------------------------------------- */}
+        {isOtpSent && (
+          <div className="flex items-center flex-col gap-4 glass p-4 rounded-md border w-96">
+            <p className="text-center font-light">
+              Verify OTP sent to{" "}
+              {selectedVerificationMethod == "phone"
+                ? formik.values.phone
+                : formik.values.email}
+            </p>
+            <Otp otp={otp} setOtp={setOtp} fieldLength={6} />
+            <Button
+              onClick={handleVerifyOTP}
+              className="w-full"
+              disabled={isLoading}
+            >
+              {isLoading && (
+                <Image
+                  src={spinner}
+                  alt="spinner"
+                  width={20}
+                  height={20}
+                  className="mr-2 h-4 w-4 animate-spin"
+                />
+              )}
+              Login
+            </Button>
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Already have an account ?
-            </span>
-          </div>
-        </div>
-        <Button variant="secondary" type="button" disabled={isLoading}>
-          <Link href="/donor/login">Login</Link>
-        </Button>
-      </div>
+        )}
+      </>
     </div>
   );
 };
 
-export default DonorLogin;
+export default DonerLogin;

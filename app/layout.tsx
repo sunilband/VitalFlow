@@ -4,8 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar/Navbar";
 import { ThemeProvider } from "@/components/Providers/theme-provider";
-import PageAnimatePresence from "@/components/Providers/PageAnimations";
 import { Toaster, toast } from "sonner";
+import { DonorProvider } from "@/contexts/donorContext";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -30,19 +30,18 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        {" "}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          {" "}
-          <PageAnimatePresence>
+          {/* context for Donor */}
+          <DonorProvider>
             <Navbar />
             {children}
             <Toaster />
-          </PageAnimatePresence>
+          </DonorProvider>
         </ThemeProvider>
       </body>
     </html>
