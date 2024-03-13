@@ -168,8 +168,8 @@ const DonorSignup = (props: Props) => {
   return (
     <div className="flex justify-center items-center  h-calculated">
       <motion.div
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        initial={{ x: 50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, type: "spring", damping: 10 }}
         className={cn(
           "grid gap-6 p-4 rounded-md shadow-xl bg-white dark:bg-[#09090B] border-[0.7px]",
@@ -431,6 +431,7 @@ const DonorSignup = (props: Props) => {
             </Button>
           </div>
         </form>
+
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
@@ -441,8 +442,16 @@ const DonorSignup = (props: Props) => {
             </span>
           </div>
         </div>
-        <Button variant="secondary" type="button" disabled={isLoading}>
-          <Link href="/donor/login">Login</Link>
+
+        <Button
+          variant="secondary"
+          type="button"
+          disabled={isLoading}
+          onClick={() => {
+            router.push("/donor/login");
+          }}
+        >
+          Login
         </Button>
       </motion.div>
     </div>

@@ -24,7 +24,7 @@ export const docsConfig: DocsConfig = {
   mainNav: [
     { label: "Donor", title: "Donor Dashboard", href: "/donor" },
     { label: "Donor", title: "Donor Login", href: "/donor/login" },
-    { label: "Donor", title: "Donor Signup", href: "/donor/login" },
+    { label: "Donor", title: "Donor Signup", href: "/donor/signup" },
     { label: "Bank", title: "Demo", href: "/donor" },
   ],
   // sidebarNav: [

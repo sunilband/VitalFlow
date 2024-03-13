@@ -119,10 +119,10 @@ const DonerLogin = (props: Props) => {
       <>
         {!isOtpSent && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="flex items-center flex-col gap-4 glass p-4 rounded-md border w-96"
+            transition={{ duration: 1, type: "spring", damping: 10 }}
+            className="flex items-center flex-col gap-4 bg-white dark:bg-[#09090B] shadow-xl p-4 rounded-md border w-96"
           >
             <div className=" flex flex-col gap-2 justify-center items-center w-full">
               <p className="text-center text-lg font-light tracking-widest">
@@ -159,16 +159,6 @@ const DonerLogin = (props: Props) => {
               )}
             />
 
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  Already have an account ?
-                </span>
-              </div>
-            </div>
             <Button
               onClick={handleSendOTP}
               className="w-full"
@@ -185,14 +175,33 @@ const DonerLogin = (props: Props) => {
               )}
               Send OTP
             </Button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center z-50">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Already have an account ?
+                </span>
+              </div>
+            </div>
+
+            <Button
+              onClick={() => router.push("/donor/signup")}
+              className="w-full"
+              variant={"secondary"}
+            >
+              Sign Up
+            </Button>
           </motion.div>
         )}
         {/* ---------------------------------------------------------- */}
         {isOtpSent && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 1, type: "spring", damping: 10 }}
             className="flex items-center flex-col gap-4 glass p-4 rounded-md border w-96"
           >
             <p className="text-center font-light">
