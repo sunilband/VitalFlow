@@ -12,6 +12,7 @@ import { sendDonorLoginOTP } from "@/lib/apiCalls/donor/sendDonorLoginOTP";
 import { donorLogin } from "@/lib/apiCalls/donor/verifyDonorLoginOTP";
 import spinner from "../../../../public/svgs/spinner.svg";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 type Props = {};
 
@@ -114,10 +115,15 @@ const DonerLogin = (props: Props) => {
   };
 
   return (
-    <div className="h-calculated w-screen flex justify-center items-center">
+    <div className="h-calculated w-screen flex justify-center items-center px-2">
       <>
         {!isOtpSent && (
-          <div className="flex items-center flex-col gap-4 glass p-4 rounded-md border w-96">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex items-center flex-col gap-4 glass p-4 rounded-md border w-96"
+          >
             <div className=" flex flex-col gap-2 justify-center items-center w-full">
               <p className="text-center text-lg font-light tracking-widest">
                 LOGIN
@@ -179,11 +185,16 @@ const DonerLogin = (props: Props) => {
               )}
               Send OTP
             </Button>
-          </div>
+          </motion.div>
         )}
         {/* ---------------------------------------------------------- */}
         {isOtpSent && (
-          <div className="flex items-center flex-col gap-4 glass p-4 rounded-md border w-96">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex items-center flex-col gap-4 glass p-4 rounded-md border w-96"
+          >
             <p className="text-center font-light">
               Verify OTP sent to{" "}
               {selectedVerificationMethod == "phone"
@@ -207,7 +218,7 @@ const DonerLogin = (props: Props) => {
               )}
               Login
             </Button>
-          </div>
+          </motion.div>
         )}
       </>
     </div>

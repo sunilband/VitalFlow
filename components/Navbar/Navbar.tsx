@@ -1,5 +1,5 @@
+"use client";
 import Link from "next/link";
-
 import { siteConfig } from "./config/site";
 import { cn } from "@/lib/utils";
 import { CommandMenu } from "./command-menu";
@@ -7,9 +7,27 @@ import { Icons } from "./icons";
 import { MainNav } from "./main-nav";
 import { MobileNav } from "./mobile-nav";
 import { ModeToggle } from "./mode-toggle";
-import { buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
+import { useDonor } from "@/contexts/donorContext";
+import { useEffect } from "react";
+import { logoutDonor } from "@/lib/apiCalls/donor/logoutDonor";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 function Navbar() {
+  const { donor, setDonor } = useDonor();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const data = await logoutDonor();
+    if (data.success) {
+      setDonor(undefined);
+      router.push("/");
+    }
+    if (!data.success) {
+      toast.error(data.message);
+    }
+  };
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-screen-2xl items-center">
@@ -38,6 +56,7 @@ function Navbar() {
               </div>
             </Link>
             <ModeToggle />
+            {donor && <Button onClick={handleLogout}>Logout</Button>}
           </nav>
         </div>
       </div>

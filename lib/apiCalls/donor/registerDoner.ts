@@ -1,4 +1,4 @@
-const server = process.env.NEXT_PUBLIC_SERVER_URL || "";
+const server = process.env.NEXT_PUBLIC_SERVER_URL + "donor/" || "";
 
 export const registerDoner = async ({
   ...data

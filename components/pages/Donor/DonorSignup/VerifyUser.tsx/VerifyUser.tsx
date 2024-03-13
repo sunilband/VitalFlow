@@ -61,10 +61,13 @@ const VerifyUser = (props: Props) => {
       if (verifiedOTP.success) {
         toast.message(verifiedOTP.message);
         const registerUser = await registerDoner({ ...params });
+        if (!registerUser.success) {
+          toast.error(registerUser.message);
+        }
         if (registerUser.success) {
           toast.success("User Registered Successfully");
           console.log("registerUser", registerUser);
-          setDonor({ ...registerUser.data });
+          setDonor({ ...registerUser.data[0] });
           console.log("donor is", donor);
           router.push("/donor");
         }
@@ -76,7 +79,7 @@ const VerifyUser = (props: Props) => {
     <div className="h-calculated w-screen flex flex-col gap-3 justify-center items-center">
       <div className="flex flex-col gap-4 glass p-4 rounded-md border">
         <div className=" flex flex-col gap-2 justify-center items-center">
-          <p className="text-center text-lg">
+          <p className="text-center text-lg font-light">
             OTP were sent to your Phone and email
           </p>
           <Tabs
@@ -87,9 +90,13 @@ const VerifyUser = (props: Props) => {
           >
             <div>
               <p className="text-center font-light mb-2">Verify using </p>
-              <TabsList>
-                <TabsTrigger value="phone">Phone</TabsTrigger>
-                <TabsTrigger value="email">Email</TabsTrigger>
+              <TabsList className="w-64">
+                <TabsTrigger value="phone" className="w-56">
+                  Phone
+                </TabsTrigger>
+                <TabsTrigger value="email" className="w-56">
+                  Email
+                </TabsTrigger>
               </TabsList>
             </div>
           </Tabs>

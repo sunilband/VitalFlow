@@ -14,8 +14,8 @@ const DonorPage = (props: Props) => {
     if (!donor) {
       try {
         getDonor().then((data) => {
-          if (data) {
-            setDonor(data);
+          if (data.success) {
+            setDonor(data.data[0]);
           } else {
             router.push("/donor/login");
           }
@@ -24,7 +24,7 @@ const DonorPage = (props: Props) => {
         console.log("error", error);
       }
     }
-  }, [donor]);
+  }, []);
 
   console.log("donor", donor);
 

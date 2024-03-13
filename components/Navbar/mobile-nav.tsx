@@ -12,9 +12,28 @@ import { Icons } from "./icons";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
+
+  const groupedItems: { [key: string]: any[] } = docsConfig.mainNav.reduce(
+    (groups, item) => {
+      if (item?.label) {
+        if (!groups[item.label]) {
+          groups[item.label] = [];
+        }
+        groups[item.label].push(item);
+      }
+      return groups;
+    },
+    {} as { [key: string]: any[] },
+  ); // Add index signature to allow indexing with a string
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -64,48 +83,28 @@ export function MobileNav() {
           <Icons.logo className="mr-2 h-4 w-4" />
           <span className="font-bold">{siteConfig.name}</span>
         </MobileLink>
-        <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
+        <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-0 pr-2">
           <div className="flex flex-col space-y-3">
-            {docsConfig.mainNav?.map(
-              (item) =>
-                item.href && (
-                  <MobileLink
-                    key={item.href}
-                    href={item.href}
-                    onOpenChange={setOpen}
-                  >
-                    {item.title}
-                  </MobileLink>
-                ),
-            )}
-          </div>
-          <div className="flex flex-col space-y-2">
-            {docsConfig.sidebarNav.map((item, index) => (
-              <div key={index} className="flex flex-col space-y-3 pt-6">
-                <h4 className="font-medium">{item.title}</h4>
-                {item?.items?.length &&
-                  item.items.map((item) => (
-                    <React.Fragment key={item.href}>
-                      {!item.disabled &&
-                        (item.href ? (
-                          <MobileLink
-                            href={item.href}
-                            onOpenChange={setOpen}
-                            className="text-muted-foreground"
-                          >
-                            {item.title}
-                            {item.label && (
-                              <span className="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">
-                                {item.label}
-                              </span>
-                            )}
-                          </MobileLink>
-                        ) : (
-                          item.title
-                        ))}
-                    </React.Fragment>
+            {Object.entries(groupedItems).map(([label, items]) => (
+              <Accordion
+                key={label}
+                type="single"
+                collapsible
+                className="w-full"
+              >
+                <AccordionItem value={label}>
+                  <AccordionTrigger>
+                    <p className="tracking-widest uppercase">{label}</p>
+                  </AccordionTrigger>
+                  {(items as any[])?.map((item: any) => (
+                    <AccordionContent key={item.href}>
+                      <MobileLink href={item.href} onOpenChange={setOpen}>
+                        {item.title}
+                      </MobileLink>
+                    </AccordionContent>
                   ))}
-              </div>
+                </AccordionItem>
+              </Accordion>
             ))}
           </div>
         </ScrollArea>
