@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar/Navbar";
 import { ThemeProvider } from "@/components/Providers/theme-provider";
 import { Toaster, toast } from "sonner";
-import { DonorProvider } from "@/contexts/donorContext";
+import { UserProvider } from "@/contexts/userContext";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -37,12 +37,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* context for Donor */}
-          <DonorProvider>
+          {/* context for User */}
+          <UserProvider>
             <Navbar />
             {children}
             <Toaster />
-          </DonorProvider>
+          </UserProvider>
         </ThemeProvider>
       </body>
     </html>

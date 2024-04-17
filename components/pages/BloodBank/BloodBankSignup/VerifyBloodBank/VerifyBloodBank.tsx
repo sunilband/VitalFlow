@@ -9,17 +9,16 @@ import { useSearchParams } from "next/navigation";
 import { registerBloodBank } from "@/lib/apiCalls/bloodbank/registerBloodBank";
 import jwt from "jsonwebtoken";
 import { useRouter } from "next/navigation";
-// import { usebloodbank } from "@/contexts/bloodbankContext";
+import { useUser } from "@/contexts/userContext";
 import { Input } from "../../../../ui/input";
 import Image from "next/image";
-import spinner from "../../../../../public/svgs/spinner.svg";
-import { set } from "date-fns";
+import spinner from "../.../../../../../../public/svgs/spinner.svg";
 
 type Props = {};
 
 const VerifyBloodBank = (props: Props) => {
   const router = useRouter();
-  // const { bloodbank, setbloodbank } = usebloodbank();
+  const { user, setUser } = useUser();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [otp, setOtp] = React.useState("");
@@ -38,11 +37,11 @@ const VerifyBloodBank = (props: Props) => {
     }
   }, [params]);
 
-  // useEffect(() => {
-  //   if (bloodbank) {
-  //     router.push("/bloodbank");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (user) {
+      router.push("/bloodbank");
+    }
+  }, []);
 
   const handleVerify = async () => {
     setIsLoading(true);
@@ -72,9 +71,9 @@ const VerifyBloodBank = (props: Props) => {
         if (registerUser.success) {
           toast.success(registerUser.message);
           console.log("registerUser", registerUser);
-          // setbloodbank({ ...registerUser.data[0] });
-          // console.log("bloodbank is", bloodbank);
-          // router.push("/bloodbank");
+          setUser({ ...registerUser.data.bloodbank });
+          console.log("bloodbank is", user);
+          router.push("/bloodbank");
         }
       }
     } catch (error) {

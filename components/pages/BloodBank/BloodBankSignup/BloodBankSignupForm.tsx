@@ -160,8 +160,6 @@ const BloodBankSignupForm = (props: Props) => {
     } catch (error) {
       console.error(error);
     }
-
-    console.log(formik.values);
   };
 
   //City and State
@@ -185,8 +183,6 @@ const BloodBankSignupForm = (props: Props) => {
       });
     }
   }, [formik.values.address.state]);
-
-  console.log("formik.values", formik.values);
 
   const fillSampleData = () => {
     formik.setValues({

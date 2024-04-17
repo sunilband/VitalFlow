@@ -13,7 +13,7 @@ import { useSearchParams } from "next/navigation";
 import { registerDoner } from "@/lib/apiCalls/donor/registerDoner";
 import jwt from "jsonwebtoken";
 import { useRouter } from "next/navigation";
-import { useDonor } from "@/contexts/donorContext";
+import { useUser } from "@/contexts/userContext";
 import { Input } from "../../../../ui/input";
 import Image from "next/image";
 import spinner from "../../../../../public/svgs/spinner.svg";
@@ -22,7 +22,7 @@ type Props = {};
 
 const VerifyUser = (props: Props) => {
   const router = useRouter();
-  const { donor, setDonor } = useDonor();
+  const { user, setUser } = useUser();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
@@ -46,7 +46,7 @@ const VerifyUser = (props: Props) => {
   }, [params]);
 
   useEffect(() => {
-    if (donor) {
+    if (user) {
       router.push("/donor");
     }
   }, []);
@@ -80,8 +80,8 @@ const VerifyUser = (props: Props) => {
         if (registerUser.success) {
           toast.success("User Registered Successfully");
           console.log("registerUser", registerUser);
-          setDonor({ ...registerUser.data[0] });
-          console.log("donor is", donor);
+          setUser({ ...registerUser.data[0] });
+          console.log("donor is", user);
           router.push("/donor");
         }
       }

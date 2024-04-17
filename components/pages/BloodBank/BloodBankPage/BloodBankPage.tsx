@@ -2,10 +2,10 @@
 import React, { useEffect } from "react";
 import { useUser } from "@/contexts/userContext";
 import { useRouter } from "next/navigation";
-import { getDonor } from "@/lib/apiCalls/donor/getDonor";
+import { getBloodbank } from "@/lib/apiCalls/bloodbank/getBloodBank";
 type Props = {};
 
-const DonorPage = (props: Props) => {
+const BloodBankPage = (props: Props) => {
   const { user, setUser } = useUser();
   const router = useRouter();
 
@@ -13,12 +13,12 @@ const DonorPage = (props: Props) => {
   useEffect(() => {
     if (!user) {
       try {
-        getDonor().then((data) => {
+        getBloodbank().then((data) => {
           if (data.success) {
             console.log("data", data.data);
             setUser(data.data);
           } else {
-            router.push("/donor/login");
+            router.push("/bloodbank/login");
           }
         });
       } catch (error) {
@@ -29,9 +29,9 @@ const DonorPage = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center h-calculated">
-      DonorPage
+      BloodBankPage
     </div>
   );
 };
 
-export default DonorPage;
+export default BloodBankPage;

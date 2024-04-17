@@ -8,20 +8,20 @@ import { MainNav } from "./main-nav";
 import { MobileNav } from "./mobile-nav";
 import { ModeToggle } from "./mode-toggle";
 import { Button, buttonVariants } from "../ui/button";
-import { useDonor } from "@/contexts/donorContext";
+import { useUser } from "@/contexts/userContext";
 import { useEffect } from "react";
 import { logoutDonor } from "@/lib/apiCalls/donor/logoutDonor";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 function Navbar() {
-  const { donor, setDonor } = useDonor();
+  const { user, setUser } = useUser();
   const router = useRouter();
 
   const handleLogout = async () => {
     const data = await logoutDonor();
     if (data.success) {
-      setDonor(undefined);
+      setUser(undefined);
       router.push("/");
     }
     if (!data.success) {
@@ -56,7 +56,7 @@ function Navbar() {
               </div>
             </Link>
             <ModeToggle />
-            {donor && <Button onClick={handleLogout}>Logout</Button>}
+            {user && <Button onClick={handleLogout}>Logout</Button>}
           </nav>
         </div>
       </div>
