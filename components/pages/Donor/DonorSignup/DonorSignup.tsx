@@ -16,7 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import {
   Select,
   SelectContent,
@@ -47,8 +47,6 @@ const DonorSignup = (props: Props) => {
     weight: "",
     gender: "",
     bloodGroup: "",
-    phone: "",
-    email: "",
     address: {
       addressType: "Donor",
       state: "",
@@ -74,13 +72,6 @@ const DonorSignup = (props: Props) => {
           "Invalid blood group",
         )
         .required("Blood group is required"),
-      phone: Yup.string()
-        .matches(
-          /^[0-9]{10}$/,
-          "Phone number is not valid.Dont add  +91 or 0 before the number",
-        )
-        .required("Phone number is required"),
-      email: Yup.string().email("Invalid email address"),
       address: Yup.object({
         addressType: Yup.string().required("Address type is required"),
         state: Yup.string().required("State is required"),
@@ -117,26 +108,7 @@ const DonorSignup = (props: Props) => {
 
     try {
       const secretInputs = await jwt.sign(formik.values, "secret");
-
-      if (formik.values.phone) {
-        const response = await sendPhoneOtp({ phone: formik.values.phone });
-        if (response.success) {
-          toast.success(response.message);
-          router.push(`/donor/signup/verify?values=${secretInputs}`);
-        } else {
-          toast.error(response.message);
-        }
-      }
-
-      if (formik.values.email) {
-        const response = await sendEmailOtp({ email: formik.values.email });
-        if (response.success) {
-          toast.success(response.message);
-          router.push(`/donor/signup/verify?values=${secretInputs}`);
-        } else {
-          toast.error(response.message);
-        }
-      }
+      router.push(`/donor/signup/verify?values=${secretInputs}`);
     } catch (error) {
       console.error(error);
     }
@@ -172,7 +144,7 @@ const DonorSignup = (props: Props) => {
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, type: "spring", damping: 10 }}
         className={cn(
-          "grid gap-6 p-4 rounded-md shadow-xl bg-white dark:bg-[#09090B] border-[0.7px]",
+          "grid gap-6 p-4 rounded-md shadow-2xl bg-white dark:bg-[#09090B] border-[0.7px]",
         )}
         {...props}
       >
@@ -292,35 +264,6 @@ const DonorSignup = (props: Props) => {
                   </Select>
                 </div>
               </section>
-
-              <div>
-                <Input
-                  required
-                  id="phone"
-                  type="text"
-                  placeholder="Phone"
-                  {...formik.getFieldProps("phone")}
-                />
-                {formik.touched.phone && formik.errors.phone ? (
-                  <div className="text-red-500 text-xs">
-                    {formik.errors.phone}
-                  </div>
-                ) : null}
-              </div>
-
-              <div>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Email"
-                  {...formik.getFieldProps("email")}
-                />
-                {formik.touched.email && formik.errors.email ? (
-                  <div className="text-red-500 text-xs">
-                    {formik.errors.email}
-                  </div>
-                ) : null}
-              </div>
 
               <div className="grid gap-2">
                 <section className="flex gap-1">

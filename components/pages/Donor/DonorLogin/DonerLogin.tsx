@@ -122,7 +122,7 @@ const DonerLogin = (props: Props) => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, type: "spring", damping: 10 }}
-            className="flex items-center flex-col gap-4 bg-white dark:bg-[#09090B] shadow-xl p-4 rounded-md border w-96"
+            className="flex items-center flex-col gap-4 bg-white dark:bg-[#09090B] shadow-2xl p-4 rounded-md border w-96"
           >
             <div className=" flex flex-col gap-2 justify-center items-center w-full">
               <p className="text-center text-lg font-light tracking-widest">
@@ -177,8 +177,8 @@ const DonerLogin = (props: Props) => {
             </Button>
 
             <div className="relative">
-              <div className="absolute inset-0 flex items-center z-50">
-                <span className="w-full border-t" />
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-background px-2 text-muted-foreground">
