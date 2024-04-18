@@ -2,11 +2,10 @@
 import React, { useEffect, useState } from "react";
 import Otp from "./Otp";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { verifyRegisterEmailOtp } from "@/lib/apiCalls/bloodbank/verifyRegisterEmailOtp";
+import { verifyRegisterEmailOtp } from "@/lib/apiCalls/camp/verifyRegisterEmailOtp";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
-import { registerBloodBank } from "@/lib/apiCalls/bloodbank/registerBloodBank";
+import { registerCamp } from "@/lib/apiCalls/camp/registerCamp";
 import jwt from "jsonwebtoken";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/contexts/userContext";
@@ -16,7 +15,7 @@ import spinner from "../.../../../../../../public/svgs/spinner.svg";
 
 type Props = {};
 
-const VerifyBloodBank = (props: Props) => {
+const VerifyCampEmail = (props: Props) => {
   const router = useRouter();
   const { user, setUser } = useUser();
   const searchParams = useSearchParams();
@@ -27,19 +26,20 @@ const VerifyBloodBank = (props: Props) => {
 
   try {
     params = jwt.verify(params, "secret");
+    console.log(params);
   } catch (error) {
     console.log("error", error);
   }
 
   useEffect(() => {
     if (!params) {
-      return router.push("/bloodbank/signup");
+      return router.push("/camp/signup");
     }
   }, [params]);
 
   useEffect(() => {
     if (user) {
-      router.push("/bloodbank");
+      router.push("/camp");
     }
   }, []);
 
@@ -49,7 +49,7 @@ const VerifyBloodBank = (props: Props) => {
     try {
       const verifiedOTP = await verifyRegisterEmailOtp({
         otp,
-        email: params.email,
+        email: params.organizerEmail,
       });
 
       if (!verifiedOTP.success) {
@@ -60,8 +60,23 @@ const VerifyBloodBank = (props: Props) => {
 
       if (verifiedOTP.success) {
         toast.message(verifiedOTP.message);
-        const registerUser = await registerBloodBank({
+        // Convert campDate to a string without the time part
+        const campDateStr = new Date(params.campDate)
+          .toISOString()
+          .split("T")[0];
+
+        // Append the start and end times to the campDateStr and convert them to date objects
+        const campStartTime = new Date(
+          `${campDateStr}T${params.campStartTime}:00Z`,
+        );
+        const campEndTime = new Date(
+          `${campDateStr}T${params.campEndTime}:00Z`,
+        );
+
+        const registerUser = await registerCamp({
           ...params,
+          campStartTime,
+          campEndTime,
           confirmPassword: params.password,
         });
         if (!registerUser.success) {
@@ -70,10 +85,8 @@ const VerifyBloodBank = (props: Props) => {
         }
         if (registerUser.success) {
           toast.success(registerUser.message);
-          console.log("registerUser", registerUser);
           setUser({ ...registerUser.data.bloodbank });
-          console.log("bloodbank is", user);
-          router.push("/bloodbank");
+          router.push("/camp");
         }
       }
     } catch (error) {
@@ -88,7 +101,9 @@ const VerifyBloodBank = (props: Props) => {
       <div className="flex flex-col gap-4 glass p-4 rounded-md border">
         <div>
           <h2 className="text-center text-lg font-light">Enter OTP sent to</h2>
-          <p className="text-sm text-center tracking-wide">{params.email}</p>
+          <p className="text-sm text-center tracking-wide">
+            {params.organizerEmail}
+          </p>
         </div>
 
         <Otp fieldLength={6} otp={otp} setOtp={setOtp} />
@@ -110,4 +125,4 @@ const VerifyBloodBank = (props: Props) => {
   );
 };
 
-export default VerifyBloodBank;
+export default VerifyCampEmail;
