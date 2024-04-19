@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { getSuperAdmin } from "@/lib/apiCalls/superadmin/getSuperAdmin";
 import Aside from "./Aside";
 import BloodBankAdminManagement from "./BloodBankAdminManagement/BloodBankAdminManagement";
+import { BackgroundBoxesDemo } from "@/components/Backgrounds/ColorBoxes/ColorBoxes";
+import { BackgroundBeams } from "@/components/Backgrounds/Beams/BackgroundBeams";
 type Props = {};
 
 const SuperAdminPage = (props: Props) => {
@@ -33,6 +35,7 @@ const SuperAdminPage = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center h-calculated">
+      {/* left sidebar */}
       <Aside
         {...{
           selectedLink,
@@ -40,7 +43,9 @@ const SuperAdminPage = (props: Props) => {
         }}
       />
       {/* View */}
-      <div className="border relative w-full h-[90%] ml-2 sm:ml-16 mr-2 overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center">
+      <div className="border relative w-full h-[90%] ml-2 sm:ml-20 mr-4 overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center">
+        {/* Background */}
+        <BackgroundBeams />
         {selectedLink === "Dashboard" && <div>Dashboard</div>}
         {selectedLink === "Blood Banks" && <BloodBankAdminManagement />}
         {selectedLink === "Donation Camps" && <div>Donation Camps</div>}

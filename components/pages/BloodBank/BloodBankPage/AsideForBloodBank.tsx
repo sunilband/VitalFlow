@@ -27,9 +27,9 @@ const Aside = ({ selectedLink, setSelectedLink }: Props) => {
   };
 
   return (
-    <div className="h-calculated">
+    <div>
       <TooltipProvider>
-        <aside className="fixed bottom-0 sm:top-[25%] top-14 left-0 z-10  sm:w-14 sm:flex-col bg-background border ml-2 rounded-md h-fit sm:flex mt-2">
+        <aside className="fixed bottom-0 sm:top-[25%] top-14 left-0 z-10  sm:w-14 sm:flex-col bg-background border ml-2 rounded-md h-fit sm:flex mt-2 light:glass">
           <nav className="flex sm:flex-col items-center justify-center gap-4 px-2 sm:py-4">
             <Tooltip>
               <TooltipTrigger asChild>
@@ -48,23 +48,7 @@ const Aside = ({ selectedLink, setSelectedLink }: Props) => {
               </TooltipTrigger>
               <TooltipContent side="right">Dashboard</TooltipContent>
             </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href="#"
-                  onClick={() => handleLinkClick("Blood Banks")}
-                  className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8 ${
-                    selectedLink === "Blood Banks"
-                      ? "text-accent-foreground"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  <Landmark className="h-5 w-5" />
-                  <span className="sr-only">Blood Banks</span>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">Blood Banks</TooltipContent>
-            </Tooltip>
+
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
@@ -82,22 +66,23 @@ const Aside = ({ selectedLink, setSelectedLink }: Props) => {
               </TooltipTrigger>
               <TooltipContent side="right">Donation Camps</TooltipContent>
             </Tooltip>
+
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
                   href="#"
-                  onClick={() => handleLinkClick("Donors")}
+                  onClick={() => handleLinkClick("Donations")}
                   className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8 ${
-                    selectedLink === "Donors"
+                    selectedLink === "Donations"
                       ? "text-accent-foreground"
                       : "text-muted-foreground"
                   }`}
                 >
                   <Users2 className="h-5 w-5" />
-                  <span className="sr-only">Donors</span>
+                  <span className="sr-only">Donations</span>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right">Donors</TooltipContent>
+              <TooltipContent side="right">Donations</TooltipContent>
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
