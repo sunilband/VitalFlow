@@ -56,7 +56,11 @@ function Navbar() {
               </div>
             </Link>
             <ModeToggle />
-            {user && <Button onClick={handleLogout}>Logout</Button>}
+            {user && (
+              <Button onClick={handleLogout} className="ml-1">
+                Logout
+              </Button>
+            )}
           </nav>
         </div>
       </div>

@@ -16,19 +16,16 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import Image from "next/image";
 import spinner from "../../../../public/svgs/spinner.svg";
-import { superAdminLogin } from "@/lib/apiCalls/superadmin/superAdminLogin";
+import { campLogin } from "@/lib/apiCalls/camp/campLogin";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/contexts/userContext";
 
 const validationSchema = Yup.object({
   email: Yup.string().email("Invalid email address").required("Required"),
   password: Yup.string().required("Required"),
 });
 
-const SuperAdminLogin = () => {
+const CampLogin = () => {
   const [isLoading, setIsLoading] = React.useState(false);
-  const { user, setUser } = useUser();
-
   const router = useRouter();
 
   const formik = useFormik({
@@ -41,13 +38,12 @@ const SuperAdminLogin = () => {
       setIsLoading(true);
       console.log(values);
       try {
-        const data = await superAdminLogin({ ...values });
+        const data = await campLogin({ ...values });
         if (data.success) {
           console.log(data);
           toast.success(data.message);
           setIsLoading(false);
-          setUser(data.data);
-          router.push("/superadmin");
+          router.push("/camp");
         } else {
           toast.error(data.message);
           setIsLoading(false);
@@ -65,7 +61,7 @@ const SuperAdminLogin = () => {
       <Card className="w-full max-w-sm drop-shadow-2xl">
         <form onSubmit={formik.handleSubmit}>
           <CardHeader>
-            <CardTitle className="text-2xl">Super Admin Login</CardTitle>
+            <CardTitle className="text-2xl">Donation Camp Login</CardTitle>
             <CardDescription>
               Enter your email below to login to your account.
             </CardDescription>
@@ -117,4 +113,4 @@ const SuperAdminLogin = () => {
   );
 };
 
-export default SuperAdminLogin;
+export default CampLogin;

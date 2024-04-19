@@ -1,6 +1,6 @@
-const server = process.env.NEXT_PUBLIC_SERVER_URL + "bloodbank/" || "";
+const server = process.env.NEXT_PUBLIC_SERVER_URL + "camp/" || "";
 
-export const bloodBankLogin = async ({ email, password }: any) => {
+export const campLogin = async ({ email, password }: any) => {
   let fetchedData = fetch(server + "login", {
     method: "POST",
     headers: {
