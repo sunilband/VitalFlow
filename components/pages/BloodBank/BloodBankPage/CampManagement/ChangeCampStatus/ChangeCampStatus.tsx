@@ -336,8 +336,8 @@ const ChangeCampStatus = (props: Props) => {
                         {/* @ts-ignore */}
                         {camp.address.city} ({camp.address.pincode})
                       </p>
-                      {/* @ts-ignore */}
                       <p className="text-sm font-extralight">
+                        {/* @ts-ignore */}
                         {new Date(camp.campDate).toLocaleString()}
                       </p>
                     </div>
