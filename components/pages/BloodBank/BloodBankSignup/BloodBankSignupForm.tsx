@@ -512,7 +512,7 @@ const BloodBankSignupForm = (props: Props) => {
               Sign Up
             </Button>
             Already have an account?{" "}
-            <Link href="#" className="underline">
+            <Link href="/bloodbank/login" className="underline">
               Sign in
             </Link>
           </div>

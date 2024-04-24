@@ -6,6 +6,7 @@ import { getBloodbank } from "@/lib/apiCalls/bloodbank/getBloodBank";
 import Aside from "./AsideForBloodBank";
 import { BackgroundBeams } from "@/components/Backgrounds/Beams/BackgroundBeams";
 import CampManagement from "./CampManagement/CampManagement";
+import DonationManagement from "./DonationManagement/DonationManagement";
 type Props = {};
 
 const BloodBankPage = (props: Props) => {
@@ -46,7 +47,7 @@ const BloodBankPage = (props: Props) => {
         <BackgroundBeams />
         {selectedLink === "Dashboard" && <div>Dashboard</div>}
         {selectedLink === "Donation Camps" && <CampManagement />}
-        {selectedLink === "Donors" && <div>Donations</div>}
+        {selectedLink === "Donations" && <DonationManagement />}
         {selectedLink === "Analytics" && <div>Analytics</div>}
         {selectedLink === "Settings" && <div>Settings</div>}
       </div>
