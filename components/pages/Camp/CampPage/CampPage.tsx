@@ -6,6 +6,7 @@ import { getBloodbank } from "@/lib/apiCalls/bloodbank/getBloodBank";
 import Aside from "./AsideForCamp";
 import { BackgroundBeams } from "@/components/Backgrounds/Beams/BackgroundBeams";
 import DonorManegement from "./DonorManagement/DonorManagement";
+import DonationsManagement from "./DonationsManagement/DonationsManagement";
 type Props = {};
 
 const CampPage = (props: Props) => {
@@ -22,7 +23,7 @@ const CampPage = (props: Props) => {
             console.log("data", data.data);
             setUser(data.data);
           } else {
-            router.push("/bloodbank/login");
+            router.push("/camp/login");
           }
         });
       } catch (error) {
@@ -46,7 +47,7 @@ const CampPage = (props: Props) => {
         <BackgroundBeams />
         {selectedLink === "Dashboard" && <div>Dashboard</div>}
         {selectedLink === "Donors" && <DonorManegement />}
-        {selectedLink === "Donations" && <div>Donations</div>}
+        {selectedLink === "Donations" && <DonationsManagement />}
         {selectedLink === "Analytics" && <div>Analytics</div>}
         {selectedLink === "Settings" && <div>Settings</div>}
       </div>
