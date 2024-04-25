@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useUser } from "@/contexts/userContext";
 import { useRouter } from "next/navigation";
 import { getBloodbank } from "@/lib/apiCalls/bloodbank/getBloodBank";
+import { getCamp } from "@/lib/apiCalls/camp/getCamp";
 import Aside from "./AsideForCamp";
 import { BackgroundBeams } from "@/components/Backgrounds/Beams/BackgroundBeams";
 import DonorManegement from "./DonorManagement/DonorManagement";
@@ -18,7 +19,7 @@ const CampPage = (props: Props) => {
   useEffect(() => {
     if (!user) {
       try {
-        getBloodbank().then((data) => {
+        getCamp().then((data) => {
           if (data.success) {
             console.log("data", data.data);
             setUser(data.data);
@@ -46,8 +47,18 @@ const CampPage = (props: Props) => {
         {/* Background */}
         <BackgroundBeams />
         {selectedLink === "Dashboard" && <div>Dashboard</div>}
-        {selectedLink === "Donors" && <DonorManegement />}
-        {selectedLink === "Donations" && <DonationsManagement />}
+        {selectedLink === "Donors" &&
+          (user && user.status === "Approved" ? (
+            <DonorManegement />
+          ) : (
+            <p>Approval Pending by Blood Bank</p>
+          ))}
+        {selectedLink === "Donations" &&
+          (user && user.status === "Approved" ? (
+            <DonationsManagement />
+          ) : (
+            <p>Approval Pending by Blood Bank</p>
+          ))}
         {selectedLink === "Analytics" && <div>Analytics</div>}
         {selectedLink === "Settings" && <div>Settings</div>}
       </div>

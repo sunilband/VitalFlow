@@ -192,7 +192,7 @@ const BloodBankSignupForm = (props: Props) => {
       contactPersonName: "John Doe",
       contactPersonPhone: "9876543210",
       email: "sunil.band.cs@ghrcem.raiosni.net",
-      password: "Sunil@123",
+      password: "Du@123",
       license: "123456",
       licenseValidity: new Date().toISOString(),
       website: "https://bloodbank.com",

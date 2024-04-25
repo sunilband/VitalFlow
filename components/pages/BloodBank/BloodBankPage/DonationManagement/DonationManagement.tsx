@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ExtractComponents from "./ExtractComponents/ExtractComponents";
-import AssignRecipient from "./AssignRecipient";
+import AssignRecipient from "./AssignRecipient/AssignRecipient";
 
 type Props = {};
 
