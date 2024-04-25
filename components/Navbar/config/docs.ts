@@ -25,8 +25,22 @@ export const docsConfig: DocsConfig = {
     { label: "Donor", title: "Donor Dashboard", href: "/donor" },
     { label: "Donor", title: "Donor Login", href: "/donor/login" },
     { label: "Donor", title: "Donor Signup", href: "/donor/signup" },
-    { label: "Bank", title: "Demo", href: "/donor" },
+    { label: "Blood Bank", title: "Blood Bank", href: "/bloodbank" },
+    {
+      label: "Blood Bank",
+      title: "Blood Bank Signup",
+      href: "/bloodbank/signup",
+    },
+    {
+      label: "Blood Bank",
+      title: "Blood Bank Login",
+      href: "/bloodbank/login",
+    },
+    { label: "Donation Camp", title: "Camp", href: "/camp" },
+    { label: "Donation Camp", title: "Camp Login", href: "/camp/login" },
+    { label: "Donation Camp", title: "Camp Signup", href: "/camp/signup" },
   ],
+
   // sidebarNav: [
   //   {
   //     title: "Getting Started",

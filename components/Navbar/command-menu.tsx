@@ -24,6 +24,9 @@ import {
   CommandList,
   CommandSeparator,
 } from "../ui/command";
+import { FaRegUser } from "react-icons/fa";
+import { BiDonateBlood } from "react-icons/bi";
+import { MdOutlineBloodtype } from "react-icons/md";
 
 export function CommandMenu({ ...props }: DialogProps) {
   const router = useRouter();
@@ -93,7 +96,14 @@ export function CommandMenu({ ...props }: DialogProps) {
                     runCommand(() => router.push(navItem.href as string));
                   }}
                 >
-                  <FileIcon className="mr-2 h-4 w-4" />
+                  {navItem.label == "Donor" ? (
+                    <FaRegUser className="mr-2 h-4 w-4" />
+                  ) : navItem.label == "Blood Bank" ? (
+                    <BiDonateBlood className="mr-2 h-4 w-4" />
+                  ) : navItem.label == "Donation Camp" ? (
+                    <MdOutlineBloodtype className="mr-2 h-4 w-4" />
+                  ) : null}
+
                   {navItem.title}
                 </CommandItem>
               ))}
