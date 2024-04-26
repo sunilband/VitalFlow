@@ -15,6 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { IoChatboxEllipsesOutline } from "react-icons/io5";
 
 type Props = {
   selectedLink: string;
@@ -84,6 +85,25 @@ const Aside = ({ selectedLink, setSelectedLink }: Props) => {
               </TooltipTrigger>
               <TooltipContent side="right">Donations</TooltipContent>
             </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="#"
+                  onClick={() => handleLinkClick("Chat")}
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8 ${
+                    selectedLink === "Chat"
+                      ? "text-accent-foreground"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  <IoChatboxEllipsesOutline className="h-5 w-5" />
+                  <span className="sr-only">Chat</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">Chat</TooltipContent>
+            </Tooltip>
+
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
@@ -101,6 +121,7 @@ const Aside = ({ selectedLink, setSelectedLink }: Props) => {
               </TooltipTrigger>
               <TooltipContent side="right">Analytics</TooltipContent>
             </Tooltip>
+
             <div className="place-items-end">
               <Tooltip>
                 <TooltipTrigger asChild>

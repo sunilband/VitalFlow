@@ -7,6 +7,7 @@ import Aside from "./AsideForBloodBank";
 import { BackgroundBeams } from "@/components/Backgrounds/Beams/BackgroundBeams";
 import CampManagement from "./CampManagement/CampManagement";
 import DonationManagement from "./DonationManagement/DonationManagement";
+import { ChatLayout } from "@/components/pages/BloodBank/Chat/chat-layout";
 type Props = {};
 
 const BloodBankPage = (props: Props) => {
@@ -48,6 +49,9 @@ const BloodBankPage = (props: Props) => {
         {selectedLink === "Dashboard" && <div>Dashboard</div>}
         {selectedLink === "Donation Camps" && <CampManagement />}
         {selectedLink === "Donations" && <DonationManagement />}
+        {selectedLink === "Chat" && (
+          <ChatLayout defaultLayout={undefined} navCollapsedSize={8} />
+        )}
         {selectedLink === "Analytics" && <div>Analytics</div>}
         {selectedLink === "Settings" && <div>Settings</div>}
       </div>
