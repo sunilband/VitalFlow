@@ -9,6 +9,7 @@ import { useUser } from "@/contexts/userContext";
 import { getChatHistory } from "@/lib/apiCalls/Chat/getChatHistory";
 import { toast } from "sonner";
 import { FaRegCircleUser } from "react-icons/fa6";
+import ReactMarkdown from "react-markdown";
 
 interface ChatListProps {
   messages?: Message[];
@@ -93,7 +94,9 @@ export function ChatList({
                 )}
                 <span className="bg-accent p-3 rounded-md max-w-xs">
                   {/* @ts-ignore */}
-                  {message.message}
+                  {/* <div dangerouslySetInnerHTML={{ __html: message.message }} /> */}
+                  {/* {message.message} */}
+                  <ReactMarkdown>{message.message}</ReactMarkdown>
                 </span>
                 {message.name !== selectedUser.name && (
                   <Avatar className="flex justify-center items-center">

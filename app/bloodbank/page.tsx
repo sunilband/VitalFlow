@@ -1,6 +1,7 @@
 import { GridBackgroundDemo } from "@/components/Backgrounds/Grid";
+import Loader from "@/components/Loader/Loader";
 import BloodBankPage from "@/components/pages/BloodBank/BloodBankPage/BloodBankPage";
-import React from "react";
+import React, { Suspense } from "react";
 
 type Props = {};
 
@@ -10,7 +11,9 @@ const page = (props: Props) => {
       <div className="relative">
         <GridBackgroundDemo />
       </div>
-      <BloodBankPage />
+      <Suspense fallback={<Loader />}>
+        <BloodBankPage />
+      </Suspense>
     </div>
   );
 };

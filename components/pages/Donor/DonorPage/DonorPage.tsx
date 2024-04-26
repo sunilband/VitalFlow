@@ -29,7 +29,7 @@ const DonorPage = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center h-calculated">
-      DonorPage
+      {user && user.fullName ? <>DonorPage</> : null}
     </div>
   );
 };

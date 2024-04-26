@@ -36,32 +36,36 @@ const CampPage = (props: Props) => {
   return (
     <div className="flex justify-center items-center h-calculated">
       {/* left sidebar */}
-      <Aside
-        {...{
-          selectedLink,
-          setSelectedLink,
-        }}
-      />
-      {/* View */}
-      <div className="border relative w-full h-[90%] ml-2 sm:ml-20 mr-4 overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center bg-opacity-80 bg-background">
-        {/* Background */}
-        <BackgroundBeams />
-        {selectedLink === "Dashboard" && <div>Dashboard</div>}
-        {selectedLink === "Donors" &&
-          (user && user.status === "Approved" ? (
-            <DonorManegement />
-          ) : (
-            <p>Approval Pending by Blood Bank</p>
-          ))}
-        {selectedLink === "Donations" &&
-          (user && user.status === "Approved" ? (
-            <DonationsManagement />
-          ) : (
-            <p>Approval Pending by Blood Bank</p>
-          ))}
-        {selectedLink === "Analytics" && <div>Analytics</div>}
-        {selectedLink === "Settings" && <div>Settings</div>}
-      </div>
+      {user && user.organizationName ? (
+        <>
+          <Aside
+            {...{
+              selectedLink,
+              setSelectedLink,
+            }}
+          />
+          {/* View */}
+          <div className="border relative w-full h-[90%] ml-2 sm:ml-20 mr-4 overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center bg-opacity-80 bg-background">
+            {/* Background */}
+            <BackgroundBeams />
+            {selectedLink === "Dashboard" && <div>Dashboard</div>}
+            {selectedLink === "Donors" &&
+              (user && user.status === "Approved" ? (
+                <DonorManegement />
+              ) : (
+                <p>Approval Pending by Blood Bank</p>
+              ))}
+            {selectedLink === "Donations" &&
+              (user && user.status === "Approved" ? (
+                <DonationsManagement />
+              ) : (
+                <p>Approval Pending by Blood Bank</p>
+              ))}
+            {selectedLink === "Analytics" && <div>Analytics</div>}
+            {selectedLink === "Settings" && <div>Settings</div>}
+          </div>
+        </>
+      ) : null}
     </div>
   );
 };

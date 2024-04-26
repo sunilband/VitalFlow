@@ -35,26 +35,30 @@ const BloodBankPage = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center h-calculated">
-      {/* left sidebar */}
-      <Aside
-        {...{
-          selectedLink,
-          setSelectedLink,
-        }}
-      />
-      {/* View */}
-      <div className="border relative w-full h-[90%] ml-2 sm:ml-20 mr-4 overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center bg-opacity-80 bg-background">
-        {/* Background */}
-        <BackgroundBeams />
-        {selectedLink === "Dashboard" && <div>Dashboard</div>}
-        {selectedLink === "Donation Camps" && <CampManagement />}
-        {selectedLink === "Donations" && <DonationManagement />}
-        {selectedLink === "Chat" && (
-          <ChatLayout defaultLayout={undefined} navCollapsedSize={8} />
-        )}
-        {selectedLink === "Analytics" && <div>Analytics</div>}
-        {selectedLink === "Settings" && <div>Settings</div>}
-      </div>
+      {user && user.name ? (
+        <>
+          {/* left sidebar */}
+          <Aside
+            {...{
+              selectedLink,
+              setSelectedLink,
+            }}
+          />
+          {/* View */}
+          <div className="border relative w-full h-[90%] ml-2 sm:ml-20 mr-4 overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center bg-opacity-80 bg-background">
+            {/* Background */}
+            <BackgroundBeams />
+            {selectedLink === "Dashboard" && <div>Dashboard</div>}
+            {selectedLink === "Donation Camps" && <CampManagement />}
+            {selectedLink === "Donations" && <DonationManagement />}
+            {selectedLink === "Chat" && (
+              <ChatLayout defaultLayout={undefined} navCollapsedSize={8} />
+            )}
+            {selectedLink === "Analytics" && <div>Analytics</div>}
+            {selectedLink === "Settings" && <div>Settings</div>}
+          </div>
+        </>
+      ) : null}
     </div>
   );
 };

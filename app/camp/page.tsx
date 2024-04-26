@@ -1,12 +1,15 @@
+import Loader from "@/components/Loader/Loader";
 import CampPage from "@/components/pages/Camp/CampPage/CampPage";
-import React from "react";
+import React, { Suspense } from "react";
 
 type Props = {};
 
 const page = (props: Props) => {
   return (
     <div>
-      <CampPage />
+      <Suspense fallback={<Loader />}>
+        <CampPage />
+      </Suspense>
     </div>
   );
 };
