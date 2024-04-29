@@ -8,6 +8,7 @@ import Aside from "./AsideForCamp";
 import { BackgroundBeams } from "@/components/Backgrounds/Beams/BackgroundBeams";
 import DonorManegement from "./DonorManagement/DonorManagement";
 import DonationsManagement from "./DonationsManagement/DonationsManagement";
+import { ChatLayout } from "../Chat/chat-layout";
 type Props = {};
 
 const CampPage = (props: Props) => {
@@ -36,7 +37,7 @@ const CampPage = (props: Props) => {
   return (
     <div className="flex justify-center items-center h-calculated">
       {/* left sidebar */}
-      {user && user.organizationName ? (
+      {user && user.organizationName && user.status == "Approved" ? (
         <>
           <Aside
             {...{
@@ -49,23 +50,18 @@ const CampPage = (props: Props) => {
             {/* Background */}
             <BackgroundBeams />
             {selectedLink === "Dashboard" && <div>Dashboard</div>}
-            {selectedLink === "Donors" &&
-              (user && user.status === "Approved" ? (
-                <DonorManegement />
-              ) : (
-                <p>Approval Pending by Blood Bank</p>
-              ))}
-            {selectedLink === "Donations" &&
-              (user && user.status === "Approved" ? (
-                <DonationsManagement />
-              ) : (
-                <p>Approval Pending by Blood Bank</p>
-              ))}
+            {selectedLink === "Donors" && <DonorManegement />}
+            {selectedLink === "Donations" && <DonationsManagement />}
+            {selectedLink === "Chat" && (
+              <ChatLayout defaultLayout={undefined} navCollapsedSize={8} />
+            )}
             {selectedLink === "Analytics" && <div>Analytics</div>}
             {selectedLink === "Settings" && <div>Settings</div>}
           </div>
         </>
-      ) : null}
+      ) : (
+        <p>Approval Pending by Affiliated Blood Bank</p>
+      )}
     </div>
   );
 };

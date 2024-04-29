@@ -6,7 +6,7 @@ type Props = {};
 
 const page = (props: Props) => {
   return (
-    <div>
+    <div className="w-screen max-w-screen overflow-hidden">
       <div className="relative">
         <GridBackgroundDemo />
       </div>

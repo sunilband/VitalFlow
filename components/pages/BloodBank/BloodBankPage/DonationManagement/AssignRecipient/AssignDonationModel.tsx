@@ -130,10 +130,10 @@ const AssignDonationModel = ({ visible, setVisible, donation }: Props) => {
       return;
     }
 
-    if (data.phone.length != 10) {
-      toast.error("Phone number must be 10 digits");
-      return;
-    }
+    // if (data.phone.length != 10) {
+    //   toast.error("Phone number must be 10 digits");
+    //   return;
+    // }
 
     if (
       data.componentGiven == "" ||

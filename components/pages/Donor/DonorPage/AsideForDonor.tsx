@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/tooltip";
 import { BiDonateBlood } from "react-icons/bi";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
+import { GrCertificate } from "react-icons/gr";
 
 type Props = {
   selectedLink: string;
@@ -55,18 +56,18 @@ const Aside = ({ selectedLink, setSelectedLink }: Props) => {
               <TooltipTrigger asChild>
                 <Link
                   href="#"
-                  onClick={() => handleLinkClick("Donors")}
+                  onClick={() => handleLinkClick("Certificates")}
                   className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8 ${
-                    selectedLink === "Donors"
+                    selectedLink === "Certificates"
                       ? "text-accent-foreground"
                       : "text-muted-foreground"
                   }`}
                 >
-                  <Users2 className="h-5 w-5" />
-                  <span className="sr-only">Donors</span>
+                  <GrCertificate className="h-5 w-5" />
+                  <span className="sr-only">Certificates</span>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right">Donors</TooltipContent>
+              <TooltipContent side="right">Certificates</TooltipContent>
             </Tooltip>
 
             <Tooltip>

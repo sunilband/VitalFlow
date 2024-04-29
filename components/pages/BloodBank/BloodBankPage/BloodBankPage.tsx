@@ -35,7 +35,7 @@ const BloodBankPage = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center h-calculated">
-      {user && user.name ? (
+      {user && user.name && user.status == "Approved" ? (
         <>
           {/* left sidebar */}
           <Aside
@@ -58,7 +58,9 @@ const BloodBankPage = (props: Props) => {
             {selectedLink === "Settings" && <div>Settings</div>}
           </div>
         </>
-      ) : null}
+      ) : (
+        <p>Approval Pending By Admin</p>
+      )}
     </div>
   );
 };

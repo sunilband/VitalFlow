@@ -18,6 +18,7 @@ import Image from "next/image";
 import spinner from "../../../../public/svgs/spinner.svg";
 import { bloodBankLogin } from "@/lib/apiCalls/bloodbank/bloodBankLogin";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 const validationSchema = Yup.object({
   email: Yup.string().email("Invalid email address").required("Required"),
@@ -57,7 +58,12 @@ const BloodBankLogin = () => {
   });
 
   return (
-    <div className="flex justify-center items-center h-calculated">
+    <motion.div
+      initial={{ x: 30, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ delay: 0.1, duration: 0.5 }}
+      className="flex justify-center items-center h-calculated"
+    >
       <Card className="w-full max-w-sm drop-shadow-2xl">
         <form onSubmit={formik.handleSubmit}>
           <CardHeader>
@@ -93,7 +99,7 @@ const BloodBankLogin = () => {
               ) : null}
             </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col gap-2">
             <Button disabled={isLoading} className="w-full">
               {isLoading && (
                 <Image
@@ -106,10 +112,30 @@ const BloodBankLogin = () => {
               )}
               Login
             </Button>
+
+            <div className="relative mt-3">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Already have an account ?
+                </span>
+              </div>
+            </div>
+
+            <Button
+              onClick={() => router.push("/bloodbank/signup")}
+              className="w-full"
+              variant={"secondary"}
+              type="button"
+            >
+              Sign Up
+            </Button>
           </CardFooter>
         </form>
       </Card>
-    </div>
+    </motion.div>
   );
 };
 
