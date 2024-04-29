@@ -155,7 +155,9 @@ const Certificate = (props: Props) => {
                     </p>
                     <Separator className="my-4" />
                     <div className="leading-8 text-lg">
-                      <p className="font-light">Serial number: {user._id}</p>
+                      <p className="font-light">
+                        Serial number: {donation._id}
+                      </p>
                       <p className="mt-2">
                         We are highly thankful to{" "}
                         <span className="font-semibold ">{user.fullName}</span>{" "}
@@ -177,7 +179,7 @@ const Certificate = (props: Props) => {
                   </p>
                   <div className="w-full flex justify-between py-2 px-3 items-center ">
                     <QRCode
-                      value={`https://vitalflow.vercel.app/verifycertificate/${user._id}`}
+                      value={`https://vitalflow.vercel.app/donor/verifycertificate?id=${donation._id}`}
                       className="h-16"
                     />
                     <div className="flex flex-col gap-3">
