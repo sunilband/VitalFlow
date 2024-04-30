@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useUser } from "@/contexts/userContext";
 import { useRouter } from "next/navigation";
 import { getSuperAdmin } from "@/lib/apiCalls/superadmin/getSuperAdmin";
@@ -34,7 +34,7 @@ const SuperAdminPage = (props: Props) => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center h-calculated">
+    <div className="flex justify-center items-center h-calculated drop-shadow-md">
       {user && (
         <>
           {/* left sidebar */}
@@ -46,8 +46,6 @@ const SuperAdminPage = (props: Props) => {
           />
           {/* View */}
           <div className="border relative w-full h-[90%] ml-2 sm:ml-20 mr-4 overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center">
-            {/* Background */}
-            <BackgroundBeams />
             {selectedLink === "Dashboard" && <div>Dashboard</div>}
             {selectedLink === "Blood Banks" && <BloodBankAdminManagement />}
             {selectedLink === "Donation Camps" && <div>Donation Camps</div>}

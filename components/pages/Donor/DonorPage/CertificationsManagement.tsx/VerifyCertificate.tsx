@@ -65,7 +65,9 @@ const VerifyCertificate = (props: Props) => {
                   <p className="font-light">Serial number: {donation._id}</p>
                   <p className="mt-2">
                     We are highly thankful to{" "}
-                    <span className="font-semibold ">{donation.fullName}</span>{" "}
+                    <span className="font-semibold ">
+                      {donation.donorId.fullName}
+                    </span>{" "}
                     for donating {donation?.componentDetails.componentType} at
                     our affiliated camp organized by{" "}
                     <span className="font-semibold">

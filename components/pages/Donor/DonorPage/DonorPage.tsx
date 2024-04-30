@@ -2,12 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "@/contexts/userContext";
 import { useRouter } from "next/navigation";
-import { getBloodbank } from "@/lib/apiCalls/bloodbank/getBloodBank";
 import { getDonor } from "@/lib/apiCalls/donor/getDonor";
 import Aside from "./AsideForDonor";
-import { BackgroundBeams } from "@/components/Backgrounds/Beams/BackgroundBeams";
-import { ChatLayout } from "../Chat/chat-layout";
+import { ChatLayout } from "@/components/Chat/chat-layout";
 import Certificate from "./CertificationsManagement.tsx/Certificate";
+import DonationsManagement from "./DonationsManagement/DonationsManagement";
+import { donorChat } from "@/lib/apiCalls/Chat/donorChat";
+
 type Props = {};
 
 const DonorPage = (props: Props) => {
@@ -24,7 +25,7 @@ const DonorPage = (props: Props) => {
             console.log("data", data.data);
             setUser(data.data);
           } else {
-            router.push("/camp/login");
+            router.push("/donor/login");
           }
         });
       } catch (error) {
@@ -34,7 +35,7 @@ const DonorPage = (props: Props) => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center h-calculated">
+    <div className="flex justify-center items-center h-calculated drop-shadow-md">
       {/* left sidebar */}
       {user && user.fullName ? (
         <>
@@ -46,13 +47,15 @@ const DonorPage = (props: Props) => {
           />
           {/* View */}
           <div className="border relative w-full h-[90%] ml-2 sm:ml-20 mr-4 overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center bg-opacity-80 bg-background">
-            {/* Background */}
-            <BackgroundBeams />
-            {selectedLink === "Dashboard" && <div>Dashboard</div>}
             {selectedLink === "Certificates" && <Certificate />}
-            {selectedLink === "Donations" && <p>Donation Management</p>}
+            {selectedLink === "Dashboard" && <div>Dashboard</div>}
+            {selectedLink === "Donations" && <DonationsManagement />}
             {selectedLink === "Chat" && (
-              <ChatLayout defaultLayout={undefined} navCollapsedSize={8} />
+              <ChatLayout
+                defaultLayout={undefined}
+                navCollapsedSize={8}
+                chatFunction={donorChat}
+              />
             )}
             {selectedLink === "Analytics" && <div>Analytics</div>}
             {selectedLink === "Settings" && <div>Settings</div>}

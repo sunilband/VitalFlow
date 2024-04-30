@@ -1,7 +1,7 @@
 import { Message, UserData } from "./data";
 import { cn } from "@/lib/utils";
 import React, { useRef } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../../../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ChatBottombar from "./chat-bottombar";
 import { AnimatePresence, motion } from "framer-motion";
 import { TbRobotFace } from "react-icons/tb";

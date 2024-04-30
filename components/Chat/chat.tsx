@@ -5,16 +5,19 @@ import React from "react";
 import { getChatHistory } from "@/lib/apiCalls/Chat/getChatHistory";
 import { toast } from "sonner";
 
-import { campChat } from "@/lib/apiCalls/Chat/campChat";
-import { FaRegCircleUser } from "react-icons/fa6";
-
 interface ChatProps {
   messages?: Message[];
   selectedUser: UserData;
   isMobile: boolean;
+  chatFunction: (message: { question: string }) => Promise<any>;
 }
 
-export function Chat({ messages, selectedUser, isMobile }: ChatProps) {
+export function Chat({
+  messages,
+  selectedUser,
+  isMobile,
+  chatFunction,
+}: ChatProps) {
   const [messagesState, setMessages] = React.useState<Message[]>([]);
 
   React.useEffect(() => {
@@ -47,7 +50,7 @@ export function Chat({ messages, selectedUser, isMobile }: ChatProps) {
     try {
       setLoadingAnswer(true);
       const question = Object.values(newMessage.message).join("");
-      campChat({ question }).then((res) => {
+      chatFunction({ question }).then((res) => {
         if (res.success) {
           let data = {
             id: messagesState.length + 1, // Using index as id, you might want to replace this

@@ -9,13 +9,17 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
-import { buttonVariants } from "../../../ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { Message, loggedInUserData } from "./data";
-import { Textarea } from "../../../ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 //   import { EmojiPicker } from "../emoji-picker";
-import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { clearChatContext } from "@/lib/apiCalls/common/clearChatContext";
 import { toast } from "sonner";
 import { GrClear } from "react-icons/gr";

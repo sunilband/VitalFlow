@@ -8,7 +8,8 @@ import Aside from "./AsideForCamp";
 import { BackgroundBeams } from "@/components/Backgrounds/Beams/BackgroundBeams";
 import DonorManegement from "./DonorManagement/DonorManagement";
 import DonationsManagement from "./DonationsManagement/DonationsManagement";
-import { ChatLayout } from "../Chat/chat-layout";
+import { ChatLayout } from "@/components/Chat/chat-layout";
+import { campChat } from "@/lib/apiCalls/Chat/campChat";
 type Props = {};
 
 const CampPage = (props: Props) => {
@@ -35,7 +36,7 @@ const CampPage = (props: Props) => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center h-calculated">
+    <div className="flex justify-center items-center h-calculated drop-shadow-md">
       {/* left sidebar */}
       {user && user.organizationName && user.status == "Approved" ? (
         <>
@@ -47,13 +48,15 @@ const CampPage = (props: Props) => {
           />
           {/* View */}
           <div className="border relative w-full h-[90%] ml-2 sm:ml-20 mr-4 overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center bg-opacity-80 bg-background">
-            {/* Background */}
-            <BackgroundBeams />
             {selectedLink === "Dashboard" && <div>Dashboard</div>}
             {selectedLink === "Donors" && <DonorManegement />}
             {selectedLink === "Donations" && <DonationsManagement />}
             {selectedLink === "Chat" && (
-              <ChatLayout defaultLayout={undefined} navCollapsedSize={8} />
+              <ChatLayout
+                defaultLayout={undefined}
+                navCollapsedSize={8}
+                chatFunction={campChat}
+              />
             )}
             {selectedLink === "Analytics" && <div>Analytics</div>}
             {selectedLink === "Settings" && <div>Settings</div>}

@@ -7,7 +7,8 @@ import Aside from "./AsideForBloodBank";
 import { BackgroundBeams } from "@/components/Backgrounds/Beams/BackgroundBeams";
 import CampManagement from "./CampManagement/CampManagement";
 import DonationManagement from "./DonationManagement/DonationManagement";
-import { ChatLayout } from "@/components/pages/BloodBank/Chat/chat-layout";
+import { ChatLayout } from "@/components/Chat/chat-layout";
+import { bloodBankChat } from "@/lib/apiCalls/Chat/boodBankChat";
 type Props = {};
 
 const BloodBankPage = (props: Props) => {
@@ -34,7 +35,7 @@ const BloodBankPage = (props: Props) => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center h-calculated">
+    <div className="flex justify-center items-center h-calculated drop-shadow-md">
       {user && user.name && user.status == "Approved" ? (
         <>
           {/* left sidebar */}
@@ -46,13 +47,15 @@ const BloodBankPage = (props: Props) => {
           />
           {/* View */}
           <div className="border relative w-full h-[90%] ml-2 sm:ml-20 mr-4 overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center bg-opacity-80 bg-background">
-            {/* Background */}
-            <BackgroundBeams />
             {selectedLink === "Dashboard" && <div>Dashboard</div>}
             {selectedLink === "Donation Camps" && <CampManagement />}
             {selectedLink === "Donations" && <DonationManagement />}
             {selectedLink === "Chat" && (
-              <ChatLayout defaultLayout={undefined} navCollapsedSize={8} />
+              <ChatLayout
+                defaultLayout={undefined}
+                navCollapsedSize={8}
+                chatFunction={bloodBankChat}
+              />
             )}
             {selectedLink === "Analytics" && <div>Analytics</div>}
             {selectedLink === "Settings" && <div>Settings</div>}

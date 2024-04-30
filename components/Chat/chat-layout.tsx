@@ -16,12 +16,14 @@ interface ChatLayoutProps {
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
+  chatFunction: (message: { question: string }) => Promise<any>;
 }
 
 export function ChatLayout({
   defaultLayout = [320, 480],
   defaultCollapsed = false,
   navCollapsedSize,
+  chatFunction,
 }: ChatLayoutProps) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
   const [selectedUser, setSelectedUser] = React.useState(userData[0]);
@@ -49,6 +51,7 @@ export function ChatLayout({
       messages={selectedUser.messages}
       selectedUser={selectedUser}
       isMobile={isMobile}
+      chatFunction={chatFunction}
     />
   );
 }
