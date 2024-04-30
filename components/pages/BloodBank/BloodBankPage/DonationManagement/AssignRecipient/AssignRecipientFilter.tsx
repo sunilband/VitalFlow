@@ -140,7 +140,7 @@ const AssignRecipientFilters = ({
   }, [formik.values]);
 
   return (
-    <div className="flex items-center justify-between py-4">
+    <div className="flex flex-wrap items-center sm:justify-between justify-center gap-2 py-4">
       <Input
         id="donorFullName"
         placeholder="Donor Name"

@@ -63,7 +63,7 @@ const CampPage = (props: Props) => {
           </div>
         </>
       ) : (
-        <p>Approval Pending by Affiliated Blood Bank</p>
+        <p>Approval Pending by Affiliated Blood Bank or unauthorized</p>
       )}
     </div>
   );

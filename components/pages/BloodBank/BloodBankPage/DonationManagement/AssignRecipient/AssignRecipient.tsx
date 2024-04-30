@@ -45,6 +45,7 @@ import ViewDonorModel from "../../../../Camp/CampPage/DonorManagement/ViewDonorM
 import { filterDonations } from "@/lib/apiCalls/bloodbank/filterDonations";
 import AssignRecipientFilter from "./AssignRecipientFilter";
 import AssignDonationModel from "./AssignDonationModel";
+import { Separator } from "@/components/ui/separator";
 
 export function AssignRecipient() {
   const columns = [
@@ -225,7 +226,7 @@ export function AssignRecipient() {
   }, [donationsFilter, assignModelVisible]);
 
   return (
-    <>
+    <div className="w-[400px] h-[750px] md:h-full sm:w-full">
       {assignModelVisible && (
         <AssignDonationModel
           visible={assignModelVisible}
@@ -259,6 +260,7 @@ export function AssignRecipient() {
                         </TableHead>
                       );
                     })}
+                    <Separator />
                   </TableRow>
                 ))}
               </TableHeader>
@@ -317,7 +319,7 @@ export function AssignRecipient() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

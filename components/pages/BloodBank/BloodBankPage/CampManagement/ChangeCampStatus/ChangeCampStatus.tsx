@@ -185,7 +185,7 @@ const ChangeCampStatus = (props: Props) => {
         />
       )}
       {!viewDataModelVisible && (
-        <Card className="mx-auto drop-shadow-2xl mt-28 sm:mt-0">
+        <Card className="mx-auto drop-shadow-2xl mt-28 sm:mt-0 w-[400px] sm:w-full">
           <CardHeader>
             <CardTitle className="text-xl">
               Change Donation Camp Status
@@ -208,7 +208,7 @@ const ChangeCampStatus = (props: Props) => {
                   />
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-wrap justify-evenly sm:justify-center gap-2">
                   <div>
                     <Select
                       {...formik.getFieldProps("status")}
@@ -232,43 +232,41 @@ const ChangeCampStatus = (props: Props) => {
                     </Select>
                   </div>
 
-                  <div className="flex gap-2">
-                    <Input
-                      id="pincode"
-                      placeholder="Pincode"
-                      {...formik.getFieldProps("pincode")}
-                      className="w-36"
-                    />
-                    <Select
-                      {...formik.getFieldProps("organizationType")}
-                      value={formik.values.organizationType}
-                      onValueChange={(e) => {
-                        formik.setFieldValue(
-                          "organizationType",
-                          e === "All" ? undefined : e,
-                        );
-                      }}
-                    >
-                      <SelectTrigger className="w-36 text-[#71717A]">
-                        <SelectValue placeholder={`Type`} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Organization Type</SelectLabel>
-                          <SelectItem value="All">All</SelectItem>
-                          <SelectItem value="Sewa hi Sangathan - Health Volunteers">
-                            Sewa hi Sangathan - Health Volunteers
-                          </SelectItem>
-                          <SelectItem value="Terapanth Yuvak Parishad">
-                            Terapanth Yuvak Parishad
-                          </SelectItem>
-                          <SelectItem value="RedCross">RedCross</SelectItem>
-                          <SelectItem value="RWA">RWA</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  <Input
+                    id="pincode"
+                    placeholder="Pincode"
+                    {...formik.getFieldProps("pincode")}
+                    className="w-36"
+                  />
+                  <Select
+                    {...formik.getFieldProps("organizationType")}
+                    value={formik.values.organizationType}
+                    onValueChange={(e) => {
+                      formik.setFieldValue(
+                        "organizationType",
+                        e === "All" ? undefined : e,
+                      );
+                    }}
+                  >
+                    <SelectTrigger className="w-36 text-[#71717A]">
+                      <SelectValue placeholder={`Type`} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Organization Type</SelectLabel>
+                        <SelectItem value="All">All</SelectItem>
+                        <SelectItem value="Sewa hi Sangathan - Health Volunteers">
+                          Sewa hi Sangathan - Health Volunteers
+                        </SelectItem>
+                        <SelectItem value="Terapanth Yuvak Parishad">
+                          Terapanth Yuvak Parishad
+                        </SelectItem>
+                        <SelectItem value="RedCross">RedCross</SelectItem>
+                        <SelectItem value="RWA">RWA</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
 
                   <div>
                     <Popover>

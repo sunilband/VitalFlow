@@ -35,7 +35,7 @@ const VerifyCertificate = (props: Props) => {
   }, []);
 
   return (
-    <div className="h-calculated flex justify-center items-center">
+    <div className="h-calculated scale-50 md:scale-75 lg:scale-100 flex justify-center items-center">
       {!donation && <Loader />}
       {donation && (
         <div>

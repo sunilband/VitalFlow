@@ -35,7 +35,7 @@ const BloodBankPage = (props: Props) => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center h-calculated drop-shadow-md">
+    <div className="flex justify-center items-center h-calculated drop-shadow-md px-2">
       {user && user.name && user.status == "Approved" ? (
         <>
           {/* left sidebar */}
@@ -46,7 +46,7 @@ const BloodBankPage = (props: Props) => {
             }}
           />
           {/* View */}
-          <div className="border relative w-full h-[90%] ml-2 sm:ml-20 mr-4 overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center bg-opacity-80 bg-background">
+          <div className="sm:border relative w-full h-[90%] sm:ml-20  overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center sm:bg-opacity-80 bg-opacity-0 sm:bg-background">
             {selectedLink === "Dashboard" && <div>Dashboard</div>}
             {selectedLink === "Donation Camps" && <CampManagement />}
             {selectedLink === "Donations" && <DonationManagement />}
@@ -62,7 +62,7 @@ const BloodBankPage = (props: Props) => {
           </div>
         </>
       ) : (
-        <p>Approval Pending By Admin</p>
+        <p>Approval Pending By Admin or unauthorized</p>
       )}
     </div>
   );
