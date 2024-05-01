@@ -117,14 +117,14 @@ const DonorManagement = (props: Props) => {
       )}
 
       {!viewDataModelVisible && !viewDonationModelVisible && (
-        <Card className="mx-auto drop-shadow-2xl mt-28 sm:mt-0">
+        <Card className="mx-auto drop-shadow-2xl  sm:mt-0">
           <CardHeader>
             <CardTitle className="text-xl">Find Donors</CardTitle>
             <CardDescription>Find donors and recieve donation </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col gap-3">
-              <div className="flex flex-wrap gap-2">
+            <div className="flex flex-col gap-3 sm:w-auto w-[340px]">
+              <div className="flex flex-wrap justify-center sm:justify-evenly gap-2">
                 <div className="relative">
                   <CiSearch className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                   <Input

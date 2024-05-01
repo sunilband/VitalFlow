@@ -185,7 +185,7 @@ const ChangeCampStatus = (props: Props) => {
         />
       )}
       {!viewDataModelVisible && (
-        <Card className="mx-auto drop-shadow-2xl mt-28 sm:mt-0 w-[400px] sm:w-full">
+        <Card className="mx-auto drop-shadow-2xl sm:mt-0 w-[400px] sm:w-full">
           <CardHeader>
             <CardTitle className="text-xl">
               Change Donation Camp Status

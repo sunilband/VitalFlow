@@ -127,13 +127,13 @@ const Certificate = (props: Props) => {
   };
 
   return (
-    <Carousel className="w-[800px] h-full">
+    <Carousel className="sm:w-[800px] w-[300px] flex justify-center items-center h-full">
       <CarouselContent>
         {donations.map((donation, key) => {
           return (
             <CarouselItem key={key}>
               <div
-                className="container pm-certificate-container scale-90"
+                className="container pm-certificate-container sm:scale-90 scale-[0.4] -ml-[13rem] sm:ml-auto"
                 id="content-id"
               >
                 <div className="outer-border" />
@@ -195,7 +195,7 @@ const Certificate = (props: Props) => {
                   </div>
                 </div>
               </div>
-              <div className="w-full flex justify-center -mt-5">
+              <div className="w-full flex justify-center sm:-mt-5 -mt-10">
                 {/* @ts-ignore */}
                 <Button onClick={() => generatePDF(getTargetElement, options)}>
                   <MdFileDownload className="mr-2" />

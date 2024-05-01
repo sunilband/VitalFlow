@@ -41,7 +41,7 @@ export default function DonationsTable({ data, columns }: TableProps) {
               {columns.map((column, index) => (
                 <TableHead
                   key={index}
-                  className={index > 0 ? "hidden sm:table-cell" : ""}
+                  className={index > (0 || 1) ? "hidden sm:table-cell" : ""}
                 >
                   {column}
                 </TableHead>
@@ -54,7 +54,9 @@ export default function DonationsTable({ data, columns }: TableProps) {
                 {columns.map((column, columnIndex) => (
                   <TableCell
                     key={columnIndex}
-                    className={columnIndex > 0 ? "hidden sm:table-cell" : ""}
+                    className={
+                      columnIndex > (0 || 1) ? "hidden sm:table-cell" : ""
+                    }
                   >
                     {row[column]}
                   </TableCell>

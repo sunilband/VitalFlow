@@ -47,7 +47,7 @@ const CampPage = (props: Props) => {
             }}
           />
           {/* View */}
-          <div className="border relative w-full h-[90%] ml-2 sm:ml-20 mr-4 overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center bg-opacity-80 bg-background">
+          <div className="sm:border relative w-full h-[90%] sm:ml-20 sm:mr-2 overflow-auto p-2 rounded-md z-50 sm:z-[5] flex justify-center items-center sm:bg-opacity-80 bg-opacity-0 sm:bg-background">
             {selectedLink === "Dashboard" && <div>Dashboard</div>}
             {selectedLink === "Donors" && <DonorManegement />}
             {selectedLink === "Donations" && <DonationsManagement />}

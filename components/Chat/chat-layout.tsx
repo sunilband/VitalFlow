@@ -47,11 +47,13 @@ export function ChatLayout({
   }, []);
 
   return (
-    <Chat
-      messages={selectedUser.messages}
-      selectedUser={selectedUser}
-      isMobile={isMobile}
-      chatFunction={chatFunction}
-    />
+    <div className="flex h-full w-full border sm:border-none bg-background sm:bg-inherit rounded-md drop-shadow-lg sm:drop-shadow-none">
+      <Chat
+        messages={selectedUser.messages}
+        selectedUser={selectedUser}
+        isMobile={isMobile}
+        chatFunction={chatFunction}
+      />
+    </div>
   );
 }

@@ -31,7 +31,7 @@ const Aside = ({ selectedLink, setSelectedLink }: Props) => {
   return (
     <div>
       <TooltipProvider>
-        <aside className="fixed bottom-0 sm:top-[25%] top-14 left-0 z-10  sm:w-14 sm:flex-col bg-background border ml-2 rounded-md h-fit sm:flex mt-2 light:glass">
+        <aside className="fixed bottom-0 sm:top-[25%] top-0 sm:left-0 left-1/2 right-1/2 sm:w-14 sm:flex-col sm:bg-background sm:border sm:ml-2 rounded-md h-fit sm:flex mt-2 light:glass z-[200] sm:z-10">
           <nav className="flex sm:flex-col items-center justify-center gap-4 px-2 sm:py-4">
             <Tooltip>
               <TooltipTrigger asChild>
